@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "date:$(LC_ALL=en_US.UTF-8  date)"
+echo "host:$(hostname)"
+echo "user:$(whoami)"
+echo "groups:$(groups)"
+echo "cpus:$(cat /proc/cpuinfo | grep processor | wc -l)"
+echo "cpu mhz:$(lscpu | grep "CPU max MHz" | awk '{print $4;}')"
+echo "cores:$(cat /proc/cpuinfo | grep "core id" | wc -l)"
+echo "model:$(cat /proc/cpuinfo | grep 'model name' | uniq | awk '{ print $4" "$5" "$6" "$7" "$8" "$9; }')"
+echo "ram:$(free -ht | grep Mem | awk '{print $2;}')"
+echo "memory:$(free -ht | grep Total | awk '{print $2;}')"
+echo "sys:$(uname -a)"
+echo "docker:$(docker --version)"
+echo "docker-compose:$(docker-compose --version)"
+echo "node:$(node -v)"
+echo "npm:$(npm -v)"
+echo "vagrant:$(vagrant -v)"
+echo "ansible:$(ansible --version)"
+
