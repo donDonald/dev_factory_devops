@@ -1,0 +1,19 @@
+---
+
+- name: Install docker
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  script: docker.install.sh
+  args:
+    executable: bash
+    state: present
+  tags: docker
+
+
+
+# Have to reset to handle group changes
+- name: docker | Reset ssh connection
+  meta: reset_connection
+
