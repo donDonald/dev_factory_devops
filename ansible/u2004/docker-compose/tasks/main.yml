@@ -1,0 +1,19 @@
+---
+
+- name: Install docker-compose
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  script: docker.compose.install.sh
+  args:
+    executable: bash
+    state: present
+  tags: docker-compose
+
+
+
+# Have to reset to handle group changes
+- name: docker-compose | Reset ssh connection
+  meta: reset_connection
+
