@@ -1,0 +1,72 @@
+---
+
+- name: Get installed pip version
+  command: "pip --version"
+  register: pip_version_output
+  ignore_errors: yes
+  changed_when: false
+  tags: python3
+
+
+
+- debug:
+    var: pip_version_output
+  tags: python3
+
+
+
+- name: Install python3-distutils
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+    force_apt_get: yes # To fix [WARNING]: Could not find aptitude. Using apt-get instead
+  vars:
+    packages:
+      - python3-distutils
+  tags: python3
+
+
+
+- name: Fetch pip installation script
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+# when: pip_version_output is failed
+  when: "(pip_version_output is failed) or not pip_version_output.stdout is search('pip ' + pip_version)"
+  tags: python3
+
+
+
+- name: Run pip installation script
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  command: python3 get-pip.py --use-feature=2020-resolver
+  args:
+    chdir: /tmp/
+# when: pip_version_output is failed
+  when: "(pip_version_output is failed) or not pip_version_output.stdout is search('pip ' + pip_version)"
+  tags: python3
+
+
+
+# Docker-py is must for docker swarm modules
+# https://docs.ansible.com/ansible/latest/modules/docker_swarm_module.html
+- name: Install docker python
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  pip:
+    name: docker
+    # TODO: Remove this (Fix for: Docker API error: client and server don't have same version (client : 1.17, server: 1.15))
+    version: 4.0.2
+  when: "(pip_version_output is failed) or not pip_version_output.stdout is search('pip ' + pip_version)"
+  tags: python3
+
