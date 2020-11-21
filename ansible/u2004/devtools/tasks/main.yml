@@ -1,0 +1,19 @@
+---
+
+- name: Install basic packages
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+    force_apt_get: yes # To fix [WARNING]: Could not find aptitude. Using apt-get instead
+  vars:
+    packages:
+      - vim
+      - mc
+      - git
+      - tig
+  tags: devtools
