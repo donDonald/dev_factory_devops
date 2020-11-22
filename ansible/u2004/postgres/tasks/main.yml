@@ -1,0 +1,37 @@
+---
+
+- name: Checkout repo
+  git:
+    repo: 'https://github.com/donDonald/postgres12-pgadmin4.git'
+    dest: /home/{{ user_name }}/database
+    version: '{{ version }}'
+  tags: postgers
+
+
+
+- name: Copy start script
+  copy:
+    src: start.sh
+    dest: /home/{{ user_name }}/database/start.sh
+    owner: '{{ user_name }}'
+    group: '{{ user_name }}'
+    mode: u=rwx,g=r,o=r
+  tags: postgers
+
+
+
+- name: Add db start into cron
+  cron:
+    name: "Restart postgres docker-compose"
+    special_time: reboot
+    job: "/home/{{ user_name }}/database/start.sh "
+  tags: postgers
+
+
+
+- name: Launch compose file
+  command: docker-compose up -d
+  args:
+    chdir: /home/{{ user_name }}/database
+  tags: postgers
+
