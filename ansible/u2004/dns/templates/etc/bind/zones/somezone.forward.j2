@@ -1,0 +1,23 @@
+; https://github.com/donDonald/devops
+; Pavel Taranov
+; pavel.a.taranov@gmail.com
+
+$TTL    604800
+
+@       IN      SOA     {{dns.ns_name}}.{{dns.zone_name}}. root.{{dns.ns_name}}.{{dns.zone_name}}. (
+                              7         ; Serial
+                         604820         ; Refresh
+                          86600         ; Retry
+                        2419600         ; Expire
+                         604600 )       ; Negative Cache TTL 
+
+;Name Server Information
+@       IN      NS      {{dns.ns_name}}.{{dns.zone_name}}.
+
+;IP address of Your Domain Name Server(DNS)
+{{dns.ns_name}} IN       A      {{dns.ns_adress}}
+
+;A Record for Host names
+;db     IN       A       192.168.100.10
+;server    IN       A    192.168.100.11
+

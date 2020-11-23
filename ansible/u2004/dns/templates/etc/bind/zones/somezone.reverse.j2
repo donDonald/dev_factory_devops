@@ -1,0 +1,23 @@
+; https://github.com/donDonald/devops
+; Pavel Taranov
+; pavel.a.taranov@gmail.com
+
+$TTL    604800
+@       IN      SOA     {{dns.zone_name}}. root.{{dns.zone_name}}. (
+                              3         ; Serial
+                         604820         ; Refresh
+                          864500        ; Retry
+                        2419270         ; Expire
+                         604880 )       ; Negative Cache TTL 
+
+;Your Name Server Info
+@       IN      NS      {{dns.ns_name}}.{{dns.zone_name}}.
+{{dns.ns_name}} IN      A       {{dns.ns_adress}}
+
+;Reverse Lookup for Your DNS Server
+{{dns.ns_adress_reverse}}       IN      PTR     {{dns.ns_name}}.{{dns.zone_name}}.
+
+;PTR Record IP address to HostName
+;10      IN      PTR     db.{{dns.zone_name}}.
+;11      IN      PTR     server.{{dns.zone_name}}.
+

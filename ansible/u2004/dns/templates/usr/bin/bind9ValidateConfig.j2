@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# https://github.com/donDonald/devops
+# Pavel Taranov
+# pavel.a.taranov@gmail.com
+
+
+
+if named-checkconf ; then
+    echo "No error is found"
+else
+    exit -1
+fi
+
+
+
+if named-checkconf /etc/bind/named.conf.local ; then
+    echo "No error is found"
+else
+    exit -1
+fi
+
+
+
+if named-checkzone {{ dns.zone_name }} /etc/bind/zones/{{ dns.zone_name }}.forward ; then
+    echo "No error is found"
+else
+    exit -1
+fi
+
+
+
+if named-checkzone {{ dns.zone_name }} /etc/bind/zones/{{ dns.zone_name }}.reverse ; then
+    echo "No error is found"
+else
+    exit -1
+fi
+

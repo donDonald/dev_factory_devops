@@ -1,0 +1,14 @@
+# https://github.com/donDonald/devops
+# Pavel Taranov
+# pavel.a.taranov@gmail.com
+
+zone "{{dns.zone_name}}" {
+    type master;
+    file "/etc/bind/zones/{{dns.zone_name}}.forward";
+};
+
+zone "{{dns.ns_adress_reverse2}}.in-addr.arpa" {      
+    type master;
+    file "/etc/bind/zones/{{dns.zone_name}}.reverse";
+};
+

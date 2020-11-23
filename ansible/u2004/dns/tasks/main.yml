@@ -1,0 +1,318 @@
+---
+# https://www.linuxbabe.com/ubuntu/set-up-local-dns-resolver-ubuntu-20-04-bind9
+# https://help.ubuntu.com/community/BIND9ServerHowto
+#
+# To point(setup) DNS server:
+#     - Get currently setup DNS:
+#         - $ systemd-resolve --status | grep "DNS Servers"
+#         - cat /etc/netplan/<intraface>.yaml 
+#     - option A: https://www.ricmedia.com/set-custom-dns-servers-on-ubuntu-18-or-20/#Set_DNS_servers_with_Netplan_Network_Manager_and_static_IP
+#     - option B: https://www.tecmint.com/set-permanent-dns-nameservers-in-ubuntu-debian/
+#     - option C: https://dedunu.info/2020/05/24/ubuntu-20-04-server-change-dns-and-domain
+#          $ sudo vim /etc/systemd/resolved.conf
+#          DNS=<your DNS server>
+#          $ sudo systemctl stop systemd-resolved
+#
+# To add a host record to DNS: https://techpolymath.com/2015/02/17/maintaining-bind-dns-records/#add_host
+#
+# Local DNS resolver:
+#     Why Run Your Own Local DNS Resolver
+#     Normally, your computer or router uses your ISP’s DNS resolver to query DNS names. Running your own local DNS resolver can speed up DNS lookups, because
+#         - The local DNS resolver only listens to your DNS requests and does not answer other people’s DNS requests, so you have a much higher chance of getting DNS answers directly from the cache on the resolver.
+#        - The network latency between your computer and DNS resolver is eliminated (almost zero), so DNS queries can be sent to root DNS servers more quickly.
+#
+# To resolve a host using system DNS setup:
+#     $ dig A google.com
+#
+# To resolve a host using certain DNS server:
+#     $ dig A google.com @192.168.100.5
+
+- name: Install bind9
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+    force_apt_get: yes # To fix [WARNING]: Could not find aptitude. Using apt-get instead
+  vars:
+    packages:
+      - bind9
+      - bind9-utils
+      - bind9-doc
+      - bind9-host
+      - net-tools
+  tags: dns
+
+
+
+- name: Copy helper script for appending another hosts
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: usr/bin/bind9AddHost.j2
+    dest: /usr/bin/bind9AddHost
+    mode: u=r,g=r,o=rwx
+  tags: dns
+
+
+
+- name: Copy helper script for validating bind9 setup
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: usr/bin/bind9ValidateConfig.j2
+    dest: /usr/bin/bind9ValidateConfig
+    mode: u=r,g=r,o=rwx
+  tags: dns
+
+
+
+- name: Create /etc/bind/zones
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  file:
+    path: /etc/bind/zones
+    state: directory
+  tags: dns
+
+
+
+- name: Setup bind9 | /etc/bind/named.conf.local
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: etc/bind/named.conf.local
+    dest: /etc/bind/named.conf.local
+  tags: dns
+
+
+
+- name: Setup bind9 | /etc/bind/named.conf.options
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: etc/bind/named.conf.options
+    dest: /etc/bind/named.conf.options
+
+
+
+- name: Setup bind9 | /etc/bind/zones/{{ dns.zone_name }}
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: etc/bind/zones/somezone.j2
+    dest: /etc/bind/zones/{{ dns.zone_name }}
+
+
+
+- name: Setup bind9 | /etc/bind/zones/{{ dns.zone_name }}.forward
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: etc/bind/zones/somezone.forward.j2
+    dest: /etc/bind/zones/{{ dns.zone_name }}.forward
+
+
+
+- name: Setup bind9 | /etc/bind/zones/{{ dns.zone_name }}.reverse
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: etc/bind/zones/somezone.reverse.j2
+    dest: /etc/bind/zones/{{ dns.zone_name }}.reverse
+  tags: dns
+
+
+
+- name: Validate bind9 setup
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  command: /usr/bin/bind9ValidateConfig
+  register: validation_result
+  failed_when: validation_result.rc != 0
+  tags: dns
+
+
+
+- name: Restart bind service
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  service:
+    name: named
+    state: restarted
+  tags: dns
+
+#############################################################################################
+#############################################################################################
+#############################################################################################
+#############################################################################################
+################################## setup bind dns server ####################################
+##### this soluton works exept testing reverse lookup doesn't return what is expected #######
+
+# https://www.linuxtechi.com/install-configure-bind-9-dns-server-ubuntu-debian/
+# $ sudo apt update && sudo apt install -y bind9 bind9-utils bind9-doc bind9-host net-tools
+
+# $ sudo vim /etc/bind/named.conf.options
+#    // listen-on-v6 { any; };
+#       listen-on port 53 { localhost; 192.168.100.0/24; };
+#       allow-query { localhost; 192.168.100.0/24; };
+#       forwarders { 8.8.8.8; };
+#       recursion yes;
+
+
+
+# $ cd /etc/bind
+# $ sudo vim named.conf.local
+#   include "/etc/bind/zones/yeee";
+#   sudo mkdir /etc/bind/zones
+
+
+# $ sudo vim zones/yeee
+#   zone "yeee" {
+#       type master;
+#       file "/etc/bind/zones/forward.yeee";
+#   };
+
+#   zone "100.168.192.in-addr.arpa" {      
+#       type master;
+#       file "/etc/bind/zones/reverse.yeee";
+#   };
+
+
+
+
+# $ sudo vim /etc/bind/zones/forward.yeee
+#   $TTL    604800
+
+#   @       IN      SOA     primary.yeee. root.primary.yeee. (
+#                                 7         ; Serial
+#                            604820         ; Refresh
+#                             86600         ; Retry
+#                           2419600         ; Expire
+#                            604600 )       ; Negative Cache TTL 
+
+#   ;Name Server Information
+#   @       IN      NS      primary.yeee.
+
+#   ;IP address of Your Domain Name Server(DNS)
+#   primary IN       A      192.168.100.5
+
+#   ;A Record for Host names
+#   db     IN       A       192.168.100.10
+#   server    IN       A    192.168.100.11
+
+
+
+# $ sudo vim /etc/bind/zones/reverse.yeee
+#   $TTL    604800
+#   @       IN      SOA     yeee. root.yeee. (
+#                                 3         ; Serial
+#                            604820         ; Refresh
+#                             864500        ; Retry
+#                           2419270         ; Expire
+#                            604880 )       ; Negative Cache TTL 
+
+#   ;Your Name Server Info
+#   @       IN      NS      primary.yeee.
+#   primary IN      A       192.168.100.5
+
+#   ;Reverse Lookup for Your DNS Server
+#   5       IN      PTR     primary.yeee.
+
+#   ;PTR Record IP address to HostName
+#   10      IN      PTR     db.yeee.
+#   11      IN      PTR     server.yeee.
+
+
+
+# $ sudo named-checkconf
+# $ sudo named-checkconf /etc/bind/named.conf.local
+# $ sudo named-checkzone linuxtechi.local /etc/bind/zones/forward.yeee
+# $ sudo named-checkzone linuxtechi.local /etc/bind/zones/reverse.yeee
+# $ sudo systemctl restart bind9
+# $ sudo systemctl restart named
+
+
+
+# Check lookup works
+# db.test machine
+# $ sudo vim /etc/resolv.conf
+#   search yeee
+#   nameserver 192.168.100.5
+
+# $ nslookup db.yeee
+#   Server:		192.168.100.5
+#   Address:	192.168.100.5#53
+
+#   Name:	db.yeee
+#   Address: 192.168.100.10
+
+# $ nslookup server.yeee
+#   Server:		192.168.100.5
+#   Address:	192.168.100.5#53
+
+#   Name:	server.yeee
+#   Address: 192.168.100.11
+
+
+
+
+
+
+# Check reverse lookup works
+# $ dig -x 192.168.100.11
+#   vagrant@db:~$ dig -x 192.168.100.10
+
+#   ; <<>> DiG 9.16.1-Ubuntu <<>> -x 192.168.100.10
+#   ;; global options: +cmd
+#   ;; Got answer:
+#   ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 33217
+#   ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+#   ;; OPT PSEUDOSECTION:
+#   ; EDNS: version: 0, flags:; udp: 4096
+#   ; COOKIE: b140091f946d1508010000005fbcbb36262ea2b9733e59b8 (good)
+#   ;; QUESTION SECTION:
+#   ;10.100.168.192.in-addr.arpa.	IN	PTR
+
+#   ;; ANSWER SECTION:
+#   10.100.168.192.in-addr.arpa. 604800 IN	PTR	db.yeee.
+
+#   ;; Query time: 4 msec
+#   ;; SERVER: 192.168.100.5#53(192.168.100.5)
+#   ;; WHEN: Tue Nov 24 07:50:13 UTC 2020
+#   ;; MSG SIZE  rcvd: 105
+
+
+
+
+
+
+
+
+
+
+

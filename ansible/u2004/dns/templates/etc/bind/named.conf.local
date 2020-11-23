@@ -1,0 +1,6 @@
+# https://github.com/donDonald/devops
+# Pavel Taranov
+# pavel.a.taranov@gmail.com
+
+include "/etc/bind/zones/{{dns.zone_name}}";
+

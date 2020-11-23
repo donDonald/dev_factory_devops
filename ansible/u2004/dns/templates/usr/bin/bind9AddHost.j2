@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# https://github.com/donDonald/devops
+# Pavel Taranov
+# pavel.a.taranov@gmail.com
+
+HOST=$1
+ADDR=$2
+#echo "bind9AddHost, host:$HOST, addr:$ADDR"
+#echo "bind9AddHost, forward zone file:/etc/bind/zones/{{ dns.zone_name }}.forward"
+#echo "bind9AddHost, reverse zone file:/etc/bind/zones/{{ dns.zone_name }}.reverse"
+
+if grep -q $HOST /etc/bind/zones/{{ dns.zone_name }}.forward
+then 
+    echo "Host $HOST is already defined"
+else
+    echo "Host $HOST is NOT defined, appending new record"
+    echo "$HOST     IN       A       $ADDR" >> /etc/bind/zones/{{ dns.zone_name }}.forward
+    LAST=$(awk -F '.' '{print $4;}' <<< "$ADDR")
+    echo "$LAST     IN       PTR     $HOST." >> /etc/bind/zones/{{ dns.zone_name }}.reverse
+    service named restart
+fi
+
