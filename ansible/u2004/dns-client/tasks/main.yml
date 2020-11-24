@@ -1,0 +1,46 @@
+---
+
+- name: Update bind9 server
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  command: bind9AddHost {{ inventory_hostname }} {{ ansible_eth1.ipv4.address }}
+  register: add_result
+  delegate_to: ns1
+  changed_when: False # Never changes the machine
+  tags: dns-client
+
+
+
+- debug:
+    msg:
+      - "add_result: {{ add_result }}"
+  tags: dns-client
+
+
+
+- name: Validate bind9 setup
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  delegate_to: ns1
+  command: /usr/bin/bind9ValidateConfig
+  register: validation_result
+  failed_when: validation_result.rc != 0
+  tags: dns-client
+
+
+
+- name: Point dns server
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  template:
+    src: etc/resolv.conf.j2
+    dest: /etc/resolv.conf
+  tags: dns-client
+
+                             

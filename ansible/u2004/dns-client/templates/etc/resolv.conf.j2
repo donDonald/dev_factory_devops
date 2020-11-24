@@ -1,0 +1,10 @@
+# https://github.com/donDonald/devops
+# Pavel Taranov
+# pavel.a.taranov@gmail.com
+
+#nameserver 127.0.0.53
+#options edns0 trust-ad
+
+search {{ dns.zone_name }}
+nameserver {{ dns.ns_adress }}
+
