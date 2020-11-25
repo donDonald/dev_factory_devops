@@ -1,0 +1,59 @@
+---
+# ansible-playbook -i hosts -K main.yml
+
+- name: Basic setup
+  hosts: all
+  roles:
+    - devtools
+
+
+
+- name: DNS servers setup
+  hosts: dns_servers
+  roles:
+    - dns
+
+
+
+- name: DNS clients setup
+  hosts: dns_clients
+  roles:
+    - dns-client
+
+
+
+- name: Db servers setup
+  hosts: db_servers
+  roles:
+    - docker-v2
+    - docker-compose-v2
+    - postgres
+
+
+
+- name: Swarm managers setup
+  hosts: swarm_managers
+  roles:
+    - python3
+    - docker-v2
+    - docker-swarm-manager
+
+
+
+- name: Swarm workers setup
+  hosts: swarm_workers
+  roles:
+    - python3
+    - docker-v2
+    - docker-swarm-worker
+
+
+
+##  - name: App servers setup
+##    hosts: app_servers
+##    roles:
+##      - dns-client
+##      - python3
+##      - docker-v2
+##      - docker-swarm-manager
+##      - docker-swarm-worker
