@@ -1,0 +1,55 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+servers=[
+    {
+        :hostname => "ns1",
+        :ip => "192.168.100.10",
+        :box => "generic/ubuntu2004",
+        :ram => 1024,
+        :cpu => 1,
+        :ports => []
+    },
+    {
+        :hostname => "db1",
+        :ip => "192.168.100.100",
+        :box => "generic/ubuntu2004",
+        :ram => 1024,
+        :cpu => 1,
+        :ports => [
+            {
+                :host => 5432,
+                :guest => 5432,
+            },
+            {
+                :host => 11111,
+                :guest => 11111,
+            }
+        ]
+    },
+    {
+        :hostname => "app-server1",
+        :ip => "192.168.100.101",
+        :box => "generic/ubuntu2004",
+        :ram => 1024,
+        :cpu => 1,
+        :ports => []
+    }
+]
+
+Vagrant.configure("2") do |config|
+    servers.each do |machine|
+        config.vm.define machine[:hostname] do |node|
+            node.vm.box = machine[:box]
+            node.vm.hostname = machine[:hostname]
+            node.vm.network "private_network", ip: machine[:ip]
+            node.vm.provider "virtualbox" do |vb|
+                vb.customize ["modifyvm", :id, "--memory", machine[:ram]]
+            end
+            # forward ports
+            machine[:ports].each do |ports|
+                node.vm.network "forwarded_port", guest:ports[:guest], host:ports[:host]
+            end
+        end
+    end
+end
