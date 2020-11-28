@@ -1,0 +1,24 @@
+---
+
+- name: Print out swarm info
+  debug:
+    msg:
+     - "inventory_hostname: {{ inventory_hostname }}"
+     - "advertise_address: {{ advertise_address }}"
+     - "manager_node: {{ manager_node }}"
+     - "manager_nodes: {{ manager_nodes }}"
+     - "manager_token: {{ manager_token }}"
+     - "worker_token: {{ worker_token }}"
+  tags: docker-swarm-worker
+
+
+
+- name: Add worker
+  docker_swarm:
+    api_version: '{{ docker.api_version }}'
+    state: join
+    advertise_addr: "{{ advertise_address }}"
+    join_token: "{{ worker_token }}"
+    remote_addrs: "{{ manager_nodes }}"
+  tags: docker-swarm-worker
+
