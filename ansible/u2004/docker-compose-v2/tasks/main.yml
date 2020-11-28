@@ -1,0 +1,47 @@
+---
+
+# https://docs.docker.com/compose/install/
+# https://github.com/docker/compose/releases
+# To collect all facts: ansible -i hosts all -m setup
+
+#   ansible_system
+#   ansible_machine
+#   ansible_architecture
+
+
+
+- name: Collect system and machine
+  setup:
+    filter: "*"
+  register: sys_info
+  tags: docker-compose-v2
+
+#   - name: docker-compose | Display system and machine
+#     debug:
+#      #var: sys_info.ansible_facts.ansible_system
+#      #var: sys_info.ansible_facts.ansible_system
+#      #verbosity: 4
+#       msg: 'System: {{sys_info.ansible_facts.ansible_system}}, Architecture: {{sys_info.ansible_facts.ansible_architecture}}'
+#     tags: docker-compose
+
+
+
+- name: Fetching docker-compose version '{{ version }}'
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{version}}/docker-compose-{{sys_info.ansible_facts.ansible_system}}-{{sys_info.ansible_facts.ansible_architecture}}"
+    dest: /usr/bin/docker-compose
+  tags: docker-compose-v2
+
+
+
+- name: Change permision
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  file: dest=/usr/bin/docker-compose mode=755
+  tags: docker-compose-v2
