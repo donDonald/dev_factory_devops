@@ -1,0 +1,58 @@
+---
+
+- name: Add new gpg key
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  apt_key:
+    keyserver: '{{ docker.key_server }}'
+    id: '{{ docker.key_id }}'
+    state: present
+  tags: docker-v2
+
+
+
+- name: Add Docker Repository
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  apt_repository:
+    repo: '{{ docker.repo }}'
+    state: present
+  tags: docker-v2
+
+
+
+- name: Install docker
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  apt:
+    name: 'docker-ce={{ docker.version }}'
+    state: present
+    update_cache: yes
+    force_apt_get: yes # To fix [WARNING]: Could not find aptitude. Using apt-get instead
+  tags: docker-v2
+
+
+
+- name: Add '{{ user_name }}' user to docker group
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  user:
+    name: '{{ user_name }}'
+    groups: docker
+    append: yes
+  tags: docker-v2
+
+
+
+# Have to reset to handle group changes
+- name: Reset ssh connection
+  meta: reset_connection
+

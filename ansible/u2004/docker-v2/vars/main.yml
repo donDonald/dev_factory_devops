@@ -1,0 +1,9 @@
+---
+
+docker:
+    key_server: "https://download.docker.com/linux/ubuntu/gpg"
+    key_id: "0EBFCD88"
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+    version: "5:19.03.13~3-0~ubuntu-focal"
+    api_version: "1.40"
+
