@@ -1,0 +1,19 @@
+---
+
+#https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
+#https://portainer.readthedocs.io/en/stable/agent.html
+
+- name: Copy portainer deployment file
+  vars:
+    src_port: '{{ portainer_src_port }}'
+    dst_port: '{{ portainer_dst_port }}'
+  template:
+    src: 'portainer-agent-stack.j2'
+    dest: '/tmp/portainer-agent-stack.yml'
+  tags: portainer
+
+
+- name: Deploy portainer
+  command: docker stack deploy --compose-file=/tmp/portainer-agent-stack.yml portainer
+  tags: portainer
+
