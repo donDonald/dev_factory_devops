@@ -1,0 +1,17 @@
+---
+
+- name: cadvisor | Create and run container
+  vars:
+    ports: '{{ cAdvisor_src_port }}:{{ cAdvisor_dst_port }}'
+  docker_container:
+    name: cadvisor
+    image: google/cadvisor:latest
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    published_ports: '{{ ports }}'
+  tags: cadvisor
+
