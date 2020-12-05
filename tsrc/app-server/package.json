@@ -1,0 +1,16 @@
+{
+    "name": "app-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "start": "cd /app-server && node server.js"
+    },
+    "keywords": [
+        "app",
+        "server",
+        "example"
+    ],
+    "author": "Pavel Taranov",
+    "license": "MIT"
+}
