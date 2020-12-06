@@ -7,7 +7,7 @@
   remote_user: '{{ user_name }}'
   command: bind9AddHost {{ inventory_hostname }} {{ ansible_eth1.ipv4.address }}
   register: add_result
-  delegate_to: ns1
+  delegate_to: "{{ dns.ns_name }}"
   changed_when: False # Never changes the machine
   tags: dns-client
 
@@ -25,7 +25,7 @@
   become_method: sudo
   become_user: root
   remote_user: '{{ user_name }}'
-  delegate_to: ns1
+  delegate_to: "{{ dns.ns_name }}"
   command: /usr/bin/bind9ValidateConfig
   register: validation_result
   failed_when: validation_result.rc != 0

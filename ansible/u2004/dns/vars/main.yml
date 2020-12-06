@@ -1,11 +1,11 @@
 ---
 
-dns:
-    zone_name: test.com
-    ns_name: ns1
-    ns_network: 192.168.100.0/24
-    ns_adress: 192.168.100.5
-    ns_adress_reverse: 5
-    ns_adress_reverse2: 100.168.192
-    ns_forwarders: 8.8.8.8
+####dns:
+####    zone_name: test.com
+####    ns_name: ns1
+####    ns_network: 192.168.100.0/24
+####    ns_adress: 192.168.100.5
+####    ns_adress_reverse: 5
+####    ns_adress_reverse2: 100.168.192
+####    ns_forwarders: 8.8.8.8
 
