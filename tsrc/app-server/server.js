@@ -12,7 +12,7 @@ let reqCount = 0;
 const requestHandler = (request, response) => {
     console.log(request.url)
     ++reqCount;
-    response.end(caption + 'Hello Node.js Server!, reqs:' + reqCount + '\n')
+    response.end(caption + 'Hallo Node.js Server, reqs:' + reqCount + '\n')
 }
 
 const server = http.createServer(requestHandler)
@@ -21,5 +21,6 @@ server.listen(port, (err) => {
     if (err) {
         return console.log(caption + 'something bad happened', err)
     }
-    console.log(caption + "server is listening on " + port)
+    console.log(caption + "Hallo Node.js server is listening on " + port)
+    console.log(caption + `Try this:$ curl http://localhost:${port}`)
 })

@@ -10,7 +10,7 @@ fi
 docker stop $CONTAINER_NAME
 docker rm -f $CONTAINER_NAME
 
-./Docker.create.sh $CONTAINER_NAME
+./docker.build.sh $CONTAINER_NAME
 
 KEYS="-it"
 

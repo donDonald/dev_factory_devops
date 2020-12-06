@@ -4,21 +4,8 @@ MAINTAINER Pavel Taranov <pavel.a.taranov@gmail.com>
 
 
 # Basic tools
-RUN apt-get update \
- && apt-get install --yes wget \
-                          build-essential \
-                          libboost-all-dev \
-                          subversion \
-                          gawk \
-                          zip \
-                          mc \
-                          vim \
-                          lsof \
-                          curl \
-                          openssl \
-                          libssl-dev \
-                          pkg-config \
-                          python
+RUN apt update \
+ && apt install --yes curl
 
 
 
@@ -45,5 +32,4 @@ RUN cd /app-server \
 
 
 
-ENTRYPOINT /app-server/Docker.entrypoint.sh
-
+ENTRYPOINT /app-server/entrypoint.sh
