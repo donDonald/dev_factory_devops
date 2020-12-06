@@ -33,7 +33,12 @@ servers=[
         :box => "generic/ubuntu2004",
         :ram => 1024,
         :cpu => 1,
-        :ports => []
+        :ports => [
+            {
+                :host => 3000,
+                :guest => 3000,
+            }
+        ]
     }
 ]
 
