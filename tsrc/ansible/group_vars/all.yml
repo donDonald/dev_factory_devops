@@ -10,7 +10,7 @@ swarm_managers_group_name: 'swarm_managers'
 
 dns:
     zone_name: test.com
-    ns_name: ns1
+    ns_name: h1
     ns_network: 192.168.100.0/24
     ns_adress: 192.168.100.10
     ns_adress_reverse: 10

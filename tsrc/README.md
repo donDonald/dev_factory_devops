@@ -44,9 +44,9 @@ If password is requested - press ENTER
 
 #### 2.2 Copy ssh keys to VMs
 ```
-$ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@ns1
-$ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@db1
-$ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@app-server1
+$ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@h1
+$ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@h2
+$ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@h3
 ```
 Use "vagrant" as password
 
@@ -54,9 +54,21 @@ Use "vagrant" as password
 
 #### 2.3 Ensure all VMs can be sshed into with no passwrd requets
 ```
-$ ssh vagrant@ns1
-$ ssh vagrant@db1
-$ ssh vagrant@app-server1
+$ ssh vagrant@h1
+$ ssh vagrant@h2
+$ ssh vagrant@h3
+```
+
+
+
+### 2.4. Make sense to take VM snapshots like this:
+```
+$ vagrant halt
+$ vagrant snapshot save v1.ssh
+```
+Start VMs again:
+```
+$ vagrant up
 ```
 
 

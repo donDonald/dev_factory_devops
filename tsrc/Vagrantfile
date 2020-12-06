@@ -3,7 +3,7 @@
 
 servers=[
     {
-        :hostname => "ns1",
+        :hostname => "h1",
         :ip => "192.168.100.10",
         :box => "generic/ubuntu2004",
         :ram => 1024,
@@ -11,30 +11,26 @@ servers=[
         :ports => []
     },
     {
-        :hostname => "db1",
+        :hostname => "h2",
         :ip => "192.168.100.100",
         :box => "generic/ubuntu2004",
         :ram => 1024,
         :cpu => 1,
         :ports => [
-            {
-                :host => 5432,
-                :guest => 5432,
-            },
-            {
+            {   # pagdmin
                 :host => 11111,
                 :guest => 11111,
             }
         ]
     },
     {
-        :hostname => "app-server1",
+        :hostname => "h3",
         :ip => "192.168.100.101",
         :box => "generic/ubuntu2004",
         :ram => 1024,
         :cpu => 1,
         :ports => [
-            {
+            {   # app server
                 :host => 3000,
                 :guest => 3000,
             }
