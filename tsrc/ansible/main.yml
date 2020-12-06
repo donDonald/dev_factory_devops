@@ -49,11 +49,8 @@
 
 
 
-##  - name: App servers setup
-##    hosts: app_servers
-##    roles:
-##      - dns-client
-##      - python3
-##      - docker-v2
-##      - docker-swarm-manager
-##      - docker-swarm-worker
+- name: App servers setup
+  hosts: app_servers
+  roles:
+    - docker-swarm-service
+

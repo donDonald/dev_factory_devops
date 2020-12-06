@@ -35,15 +35,38 @@ $ ssh vagrant@app-server1
 
 
 
-### 4. Run ansible
+### 4. Setup VMs by running ansible
 ```
 $ cd ansible
 $ ansible-playbook -i hosts -K main.yml
 ```
+Ansible will ask "BECOME" password - use "vagrant"
 
 
 
-#### 5. Shutdown VMs
+### 5. Check app is working in swarm mode
+```
+$ curl localhost:3000
+[fb72b1c8015e@root] Hallo Node.js Server, reqs:2
+$ curl localhost:3000
+[1b99f6085a38@root] Hallo Node.js Server, reqs:2
+$ curl localhost:3000
+[fb72b1c8015e@root] Hallo Node.js Server, reqs:3
+$ curl localhost:3000
+[1b99f6085a38@root] Hallo Node.js Server, reqs:3
+$ curl localhost:3000
+[fb72b1c8015e@root] Hallo Node.js Server, reqs:4
+$ curl localhost:3000
+[1b99f6085a38@root] Hallo Node.js Server, reqs:4
+$ curl localhost:3000
+[fb72b1c8015e@root] Hallo Node.js Server, reqs:5
+$ curl localhost:3000
+[1b99f6085a38@root] Hallo Node.js Server, reqs:5
+```
+
+
+
+#### 6. Shutdown VMs
 ```
 $ vagrant halt
 ```
