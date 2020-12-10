@@ -18,15 +18,15 @@
 - name: DNS clients setup
   hosts: dns_clients
   roles:
-    - dns-client
+    - dns_client
 
 
 
 - name: Db servers setup
   hosts: db_servers
   roles:
-    - docker-v2
-    - docker-compose-v2
+    - docker_v2
+    - docker_compose_v2
     - postgres
 
 
@@ -35,8 +35,8 @@
   hosts: swarm_managers
   roles:
     - python3
-    - docker-v2
-    - docker-swarm-manager
+    - docker_v2
+    - docker_swarm_manager
 
 
 
@@ -44,15 +44,15 @@
   hosts: swarm_workers
   roles:
     - python3
-    - docker-v2
-    - docker-swarm-worker
+    - docker_v2
+    - docker_swarm_worker
 
 
 
 - name: App servers setup
   hosts: app_servers
   roles:
-    - docker-swarm-service
+    - docker_swarm_service
 
 
 
@@ -60,9 +60,9 @@
   hosts: portainer
   roles:
     - python3
-    - docker-v2
-    - docker-compose-v2
-    - docker-swarm-manager
+    - docker_v2
+    - docker_compose_v2
+    - docker_swarm_manager
     - portainer
 
 
@@ -71,9 +71,9 @@
   hosts: portainer_agents
   roles:
 #   - python3
-#   - docker-v2
-#   - docker-compose-v2
-#   - docker-swarm-manager
+#   - docker_v2
+#   - docker_compose_v2
+#   - docker_swarm_manager
     - portainer_agent
 
 

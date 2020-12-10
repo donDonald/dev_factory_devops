@@ -4,5 +4,5 @@
   docker_network:
     name: "{{ docker_swarm_manager.network_name }}"
     driver: overlay
-  tags: docker-swarm-manager
+  tags: docker_swarm_manager
 

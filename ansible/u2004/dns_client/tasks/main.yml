@@ -9,14 +9,14 @@
   register: add_result
   delegate_to: "{{ dns.ns_name }}"
   changed_when: False # Never changes the machine
-  tags: dns-client
+  tags: dns_client
 
 
 
 - debug:
     msg:
       - "add_result: {{ add_result }}"
-  tags: dns-client
+  tags: dns_client
 
 
 
@@ -29,7 +29,7 @@
   command: /usr/bin/bind9ValidateConfig
   register: validation_result
   failed_when: validation_result.rc != 0
-  tags: dns-client
+  tags: dns_client
 
 
 
@@ -41,6 +41,6 @@
   template:
     src: etc/resolv.conf.j2
     dest: /etc/resolv.conf
-  tags: dns-client
+  tags: dns_client
 
                              

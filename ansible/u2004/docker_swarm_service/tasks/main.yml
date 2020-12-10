@@ -9,7 +9,7 @@
      - "app_name:{{ docker_swarm_service.app_name }}"
      - "image:{{ docker_swarm_service.image }}"
      - "replicas_count:{{ docker_swarm_service.replicas_count }}"
-  tags: docker-swarm-service
+  tags: docker_swarm_service
 
 
 
@@ -25,5 +25,5 @@
         target_port: "{{ docker_swarm_service.network_target_port }}"
         protocol: tcp
         mode: ingress
-  tags: docker-swarm-service
+  tags: docker_swarm_service
 

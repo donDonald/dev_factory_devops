@@ -9,11 +9,11 @@
   args:
     executable: bash
     state: present
-  tags: docker-compose
+  tags: docker_compose
 
 
 
 # Have to reset to handle group changes
-- name: docker-compose | Reset ssh connection
+- name: Reset ssh connection
   meta: reset_connection
 

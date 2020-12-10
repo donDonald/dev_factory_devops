@@ -10,7 +10,7 @@
   register: swarm_info
   ignore_errors: true
   changed_when: False # Never changes the machine
-  tags: docker-swarm-manager
+  tags: docker_swarm_manager
 
 
 
@@ -18,7 +18,7 @@
     msg:
       - "Swarm is initialized:{{ swarm_info.stdout.find('Swarm: inactive') == -1 }}"
       - "docker api version:'{{ docker.api_version }}"
-  tags: docker-swarm-manager
+  tags: docker_swarm_manager
 
 
 
@@ -29,7 +29,7 @@
     advertise_addr: '{{ docker_swarm_manager.advertise_address }}'
 # when: not swarm_info.docker_swarm_active # Only in case the swarm is not initialized
   when: "swarm_info.stdout.find('Swarm: inactive') != -1" # Only in case the swarm is not initialized
-  tags: docker-swarm-manager
+  tags: docker_swarm_manager
 
 
 
@@ -38,7 +38,7 @@
     api_version: '{{ docker.api_version }}'
 # ignore_errors: yes
   register: swarm_info_2
-  tags: docker-swarm-manager
+  tags: docker_swarm_manager
 
 
 
@@ -54,5 +54,5 @@
       - 'This is a Manager node:{{ swarm_info_2.docker_swarm_manager }}'
       - 'Manager token:{{ swarm_info_2.swarm_facts.JoinTokens.Manager }}'
       - 'Worker token:{{ swarm_info_2.swarm_facts.JoinTokens.Worker }}'
-  tags: docker-swarm-manager
+  tags: docker_swarm_manager
 

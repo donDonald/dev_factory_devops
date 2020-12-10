@@ -9,7 +9,7 @@
     keyserver: '{{ docker.key_server }}'
     id: '{{ docker.key_id }}'
     state: present
-  tags: docker-v2
+  tags: docker_v2
 
 
 
@@ -21,7 +21,7 @@
   apt_repository:
     repo: '{{ docker.repo }}'
     state: present
-  tags: docker-v2
+  tags: docker_v2
 
 
 
@@ -35,7 +35,7 @@
     state: present
     update_cache: yes
     force_apt_get: yes # To fix [WARNING]: Could not find aptitude. Using apt-get instead
-  tags: docker-v2
+  tags: docker_v2
 
 
 
@@ -48,7 +48,7 @@
     name: '{{ user_name }}'
     groups: docker
     append: yes
-  tags: docker-v2
+  tags: docker_v2
 
 
 
