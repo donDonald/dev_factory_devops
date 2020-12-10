@@ -1,0 +1,48 @@
+version: '3.2'
+
+
+
+services:
+
+
+
+    # https://www.portainer.io/documentation/how-to-use-the-agent/
+    agent:
+        image: portainer/agent:{{ tag }}
+           #environment:
+           #    AGENT_PORT: 9001
+           #    LOG_LEVEL: debug
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /var/lib/docker/volumes:/var/lib/docker/volumes
+        ports:
+            - target: 9001
+              published: 9001
+              protocol: tcp
+              mode: host
+        networks:
+            - portainer_agent
+        deploy:
+            mode: global
+            placement:
+              constraints: [node.platform.os == linux]
+
+
+
+# https://www.portainer.io/documentation/how-to-use-the-agent/
+# https://coderoad.ru/38088279/%D0%A1%D0%B2%D1%8F%D0%B7%D1%8C-%D0%BC%D0%B5%D0%B6%D0%B4%D1%83-%D0%BD%D0%B5%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%B8%D0%BC%D0%B8-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0%D0%BC%D0%B8-docker-compose
+####networks:
+####    portainer_agent:
+####        driver: overlay
+####        attachable: true
+
+
+
+networks:
+   portainer_agent:
+        external:
+            name: portainer_portainer_network
+        #external: true
+        #driver: overlay
+        #attachable: true
+

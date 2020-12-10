@@ -1,0 +1,37 @@
+version: '3.2'
+
+
+
+services:
+
+
+
+    portainer:
+        image: portainer/portainer-ce:{{ tag }}
+#       command: -H tcp://tasks.agent:{{ src_port }} --tlsskipverify
+        command: -H tcp://tasks.agent:9001 --tlsskipverify
+        ports:
+            - "{{ src_port }}:{{ dst_port }}"
+            - "8000:8000"
+        volumes:
+            - portainer_data:/data
+        networks:
+            - portainer_network
+        deploy:
+            mode: replicated
+            replicas: 1
+            placement:
+                constraints: [node.role == manager]
+
+
+
+networks:
+    portainer_network:
+        driver: overlay
+        attachable: true
+
+
+
+volumes:
+    portainer_data:
+
