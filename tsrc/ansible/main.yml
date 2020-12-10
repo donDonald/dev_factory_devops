@@ -54,3 +54,39 @@
   roles:
     - docker-swarm-service
 
+
+
+- name: Setup portainer
+  hosts: portainer
+  roles:
+    - python3
+    - docker-v2
+    - docker-compose-v2
+    - docker-swarm-manager
+    - portainer
+
+
+
+- name: Setup portainer agents
+  hosts: portainer_agents
+  roles:
+#   - python3
+#   - docker-v2
+#   - docker-compose-v2
+#   - docker-swarm-manager
+    - portainer_agent
+
+
+
+####- name: Setup cAdvisor
+####  hosts: cadvisor
+####  roles:
+####    - cadvisor
+
+
+
+####- name: Setup monitoring
+####  hosts: monitoring
+####  roles:
+####    - dockprom
+

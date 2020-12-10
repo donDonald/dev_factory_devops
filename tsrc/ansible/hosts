@@ -27,3 +27,23 @@ h3 ansible_ssh_user='{{ user_name }}'
 [app_servers]
 h3 ansible_ssh_user='{{ user_name }}'
 
+
+
+[portainer]
+h1 ansible_ssh_user='{{ user_name }}'
+
+
+
+[portainer_agents]
+h1 ansible_ssh_user='{{ user_name }}'
+
+
+
+#   [cadvisor]
+#   h1 ansible_ssh_user='{{ user_name }}'
+
+
+
+#   [monitoring]
+#   h1 ansible_ssh_user='{{ user_name }}'
+
