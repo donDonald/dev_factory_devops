@@ -7,7 +7,7 @@
 - name: Print out portainer agent info
   debug:
     msg:
-     - "tag: {{ portainer_agent.tag }}"
+     - "tag:{{ portainer_agent.tag }}"
   tags: portainer_agent
 
 
@@ -17,12 +17,12 @@
     tag: '{{ portainer_agent.tag }}'
   template:
     src: 'portainer-agent-stack.j2'
-    dest: '/tmp/portainer-agent-stack.yml'
+    dest: '/home/{{ user_name }}/portainer-agent-stack.yml'
   tags: portainer_agent
 
  
 
 - name: Deploy portainer agent
-  command: docker stack deploy --compose-file=/tmp/portainer-agent-stack.yml portainer_agent
+  command: docker stack deploy --compose-file=/home/{{ user_name }}/portainer-agent-stack.yml portainer_agent
   tags: portainer_agent
 

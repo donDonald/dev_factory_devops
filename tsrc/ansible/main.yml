@@ -62,19 +62,18 @@
     - python3
     - docker_v2
     - docker_compose_v2
-    - docker_swarm_manager
     - portainer
 
 
 
-- name: Setup portainer agents
-  hosts: portainer_agents
-  roles:
-#   - python3
-#   - docker_v2
-#   - docker_compose_v2
-#   - docker_swarm_manager
-    - portainer_agent
+#   - name: Setup portainer agents
+#     hosts: portainer_agents
+#     roles:
+#   #   - python3
+#   #   - docker_v2
+#   #   - docker_compose_v2
+#   #   - docker_swarm_manager
+#       - portainer_agent
 
 
 
