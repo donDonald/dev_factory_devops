@@ -1,8 +1,0 @@
----
-
-- name: Create overlay network '{{ portainer.network_name }}'
-  docker_network:
-    name: "{{ portainer.network_name }}"
-    driver: overlay
-  tags: portainer
-

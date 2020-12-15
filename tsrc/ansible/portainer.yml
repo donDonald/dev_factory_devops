@@ -1,0 +1,30 @@
+---
+
+- name: Setup portainer swarm manager
+  hosts: portainer
+  roles:
+    - python3
+    - docker_v2
+    - docker_compose_v2
+    - portainer_manager
+
+
+
+- name: Setup portainer swarm workers(agents)
+  hosts: portainer_agents
+  roles:
+    - python3
+    - docker_v2
+    - docker_compose_v2
+    - portainer_worker
+
+
+
+- name: Deploy portainer
+  hosts: portainer
+  roles:
+    - python3
+    - docker_v2
+    - docker_compose_v2
+    - portainer_service
+

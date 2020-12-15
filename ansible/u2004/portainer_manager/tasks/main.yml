@@ -3,18 +3,6 @@
 #https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
 #https://portainer.readthedocs.io/en/stable/agent.html
 
-- name: Print out portainer info
-  debug:
-    msg:
-     - "tag:{{ portainer.tag }}"
-     - "src_port:{{ portainer.src_port }}"
-     - "dst_port:{{ portainer.dst_port }}"
-     - "network_name:{{ portainer.network_name}}"
-     - "advertise_addr:{{ portainer.advertise_address }}"
-  tags: portainer
-
-
-
 - name: Check if Swarm has already been initialized
   shell: docker info
   register: swarm_info
@@ -26,8 +14,9 @@
 
 - debug:
     msg:
+      #- "{{ swarm_info }}"
       - "Swarm is initialized:{{ swarm_info.stdout.find('Swarm: inactive') == -1 }}"
-      - "docker api version:'{{ docker.api_version }}"
+      - "docker api version:{{ docker.api_version }}"
   tags: portainer
 
 
@@ -36,7 +25,7 @@
   docker_swarm:
     api_version: '{{ docker.api_version }}'
     state: present
-    advertise_addr: '{{ portainer.advertise_address }}'
+    advertise_addr: '{{ advertise_address }}'
 # when: not swarm_info.docker_swarm_active # Only in case the swarm is not initialized
   when: "swarm_info.stdout.find('Swarm: inactive') != -1" # Only in case the swarm is not initialized
   tags: portainer
@@ -52,35 +41,13 @@
 
 
 
-- include: network.yml
-
-
-
 - debug:
     msg:
       - "inventory_hostname:{{ inventory_hostname }}"
-      - "advertise_address:{{ portainer.advertise_address }}"
+      - "advertise_address:{{ advertise_address }}"
       - 'Docker in Swarm mode:{{ swarm_info_2.docker_swarm_active }}'
       - 'This is a Manager node:{{ swarm_info_2.docker_swarm_manager }}'
       - 'Manager token:{{ swarm_info_2.swarm_facts.JoinTokens.Manager }}'
       - 'Worker token:{{ swarm_info_2.swarm_facts.JoinTokens.Worker }}'
-  tags: portainer
-
-
-
-- name: Copy portainer deployment file
-  vars:
-    tag: '{{ portainer.tag }}'
-    src_port: '{{ portainer.src_port }}'
-    dst_port: '{{ portainer.dst_port }}'
-  template:
-    src: 'portainer-stack.j2'
-    dest: '/home/{{ user_name }}/portainer-stack.yml'
-  tags: portainer
-
- 
-
-- name: Deploy portainer
-  command: docker stack deploy --compose-file=/home/{{ user_name }}/portainer-stack.yml portainer
   tags: portainer
 

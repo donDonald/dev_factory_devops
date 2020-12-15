@@ -16,7 +16,7 @@ services:
         volumes:
             - portainer_data:/data
         networks:
-            - portainer_network
+            - {{ network_name }}
         deploy:
             mode: replicated
             replicas: 1
@@ -40,7 +40,7 @@ services:
               protocol: tcp
               mode: host
         networks:
-            - portainer_network
+            - {{ network_name }}
         deploy:
             mode: global
             placement:
@@ -49,7 +49,7 @@ services:
 
 
 networks:
-    portainer_network:
+    {{ network_name }}:
         driver: overlay
         attachable: true
 
