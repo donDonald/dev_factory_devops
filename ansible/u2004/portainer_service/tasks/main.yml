@@ -1,7 +1,8 @@
 ---
 
-#https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
-#https://portainer.readthedocs.io/en/stable/agent.html
+# https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
+# https://portainer.readthedocs.io/en/stable/agent.html
+# https://www.portainer.io/2018/10/using-portainer-agent/
 
 - name: Print out portainer info
   debug:
@@ -9,27 +10,8 @@
      - "tag:{{ tag }}"
      - "src_port:{{ src_port }}"
      - "dst_port:{{ dst_port }}"
-  tags: portainer
-
-
-
-- name: Get info on Docker Swarm
-  docker_swarm_info:
-    api_version: '{{ docker.api_version }}'
-# ignore_errors: yes
-  register: swarm_info_2
-
-
-
-- debug:
-    msg:
-      - "inventory_hostname:{{ inventory_hostname }}"
-      - "network_name:{{ network_name }}"
-      - "advertise_address:{{ advertise_address }}"
-      - 'Docker in Swarm mode:{{ swarm_info_2.docker_swarm_active }}'
-      - 'This is a Manager node:{{ swarm_info_2.docker_swarm_manager }}'
-      - 'Manager token:{{ swarm_info_2.swarm_facts.JoinTokens.Manager }}'
-      - 'Worker token:{{ swarm_info_2.swarm_facts.JoinTokens.Worker }}'
+     - "network_name:{{ network_name }}"
+     - "advertise_address:{{ advertise_address }}"
   tags: portainer
 
 
@@ -40,7 +22,7 @@
     dest: '/home/{{ user_name }}/portainer-stack.yml'
   tags: portainer
 
- 
+
 
 - name: Deploy portainer
   command: docker stack deploy --compose-file=/home/{{ user_name }}/portainer-stack.yml portainer

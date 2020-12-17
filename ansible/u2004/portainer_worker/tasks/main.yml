@@ -1,19 +1,15 @@
 ---
 
-#https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
-#https://portainer.readthedocs.io/en/stable/agent.html
-#https://www.portainer.io/2018/10/using-portainer-agent/
-
 - name: Print out swarm info
   debug:
     msg:
-     - "inventory_hostname: {{ inventory_hostname }}"
-     - "advertise_address: {{ advertise_address }}"
-     - "manager_node: {{ manager_node }}"
-     - "manager_nodes: {{ manager_nodes }}"
-     - "manager_token: {{ manager_token }}"
-     - "worker_token: {{ worker_token }}"
-  tags: portainer
+      - "manager_group:{{ manager_group }}"
+      - "advertise_address:{{ advertise_address }}"
+      - "manager_node:{{ manager_node }}"
+      - "manager_nodes:{{ manager_nodes }}"
+      - "manager_token:{{ manager_token }}"
+      - "worker_token:{{ worker_token }}"
+      - "api_version:{{ docker.api_version }}"
 
 
 
@@ -24,5 +20,4 @@
     advertise_addr: "{{ advertise_address }}"
     join_token: "{{ worker_token }}"
     remote_addrs: "{{ manager_nodes }}"
-  tags: portainer
 

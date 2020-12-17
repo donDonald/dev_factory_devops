@@ -1,23 +1,17 @@
 ---
 
-#https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
-#https://portainer.readthedocs.io/en/stable/agent.html
-
 - name: Check if Swarm has already been initialized
   shell: docker info
-  register: swarm_info
+  register: docker_info
   ignore_errors: true
   changed_when: False # Never changes the machine
-  tags: portainer
 
 
 
 - debug:
     msg:
-      #- "{{ swarm_info }}"
-      - "Swarm is initialized:{{ swarm_info.stdout.find('Swarm: inactive') == -1 }}"
-      - "docker api version:{{ docker.api_version }}"
-  tags: portainer
+      - "Swarm is initialized:{{ docker_info.stdout.find('Swarm: inactive') == -1 }}"
+      - "api_version:{{ docker.api_version }}"
 
 
 
@@ -27,8 +21,7 @@
     state: present
     advertise_addr: '{{ advertise_address }}'
 # when: not swarm_info.docker_swarm_active # Only in case the swarm is not initialized
-  when: "swarm_info.stdout.find('Swarm: inactive') != -1" # Only in case the swarm is not initialized
-  tags: portainer
+  when: "docker_info.stdout.find('Swarm: inactive') != -1" # Only in case the swarm is not initialized
 
 
 
@@ -36,18 +29,15 @@
   docker_swarm_info:
     api_version: '{{ docker.api_version }}'
 # ignore_errors: yes
-  register: swarm_info_2
-  tags: portainer
+  register: swarm_info
 
 
 
 - debug:
     msg:
-      - "inventory_hostname:{{ inventory_hostname }}"
       - "advertise_address:{{ advertise_address }}"
-      - 'Docker in Swarm mode:{{ swarm_info_2.docker_swarm_active }}'
-      - 'This is a Manager node:{{ swarm_info_2.docker_swarm_manager }}'
-      - 'Manager token:{{ swarm_info_2.swarm_facts.JoinTokens.Manager }}'
-      - 'Worker token:{{ swarm_info_2.swarm_facts.JoinTokens.Worker }}'
-  tags: portainer
+      - 'Docker in Swarm mode:{{ swarm_info.docker_swarm_active }}'
+      - 'This is a Manager node:{{ swarm_info.docker_swarm_manager }}'
+      - 'Manager token:{{ swarm_info.swarm_facts.JoinTokens.Manager }}'
+      - 'Worker token:{{ swarm_info.swarm_facts.JoinTokens.Worker }}'
 
