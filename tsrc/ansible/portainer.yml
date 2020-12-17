@@ -6,7 +6,7 @@
     - python3
     - docker_v2
     - docker_compose_v2
-    - portainer_manager
+    - docker_swarm_manager
 
 
 
@@ -18,7 +18,7 @@
     - python3
     - docker_v2
     - docker_compose_v2
-    - portainer_worker
+    - docker_swarm_worker
 
 
 

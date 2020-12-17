@@ -1,7 +1,8 @@
 ---
 
 advertise_address: '{{ hostvars[inventory_hostname]["ansible_default_ipv4"]["address"] }}:2377'
-manager_nodes: '{{ hostvars[inventory_hostname].groups[swarm_managers_group_name]}}'
-manager_node:  '{{ hostvars[inventory_hostname].groups[swarm_managers_group_name][0]}}'
-manager_token: '{{ hostvars[manager_node].swarm_info_2.swarm_facts.JoinTokens.Manager }}'
-worker_token:  '{{ hostvars[manager_node].swarm_info_2.swarm_facts.JoinTokens.Worker }}'
+manager_nodes: '{{ hostvars[inventory_hostname].groups[manager_group]}}'
+manager_node:  '{{ hostvars[inventory_hostname].groups[manager_group][0]}}'
+manager_token: '{{ hostvars[manager_node].swarm_info.swarm_facts.JoinTokens.Manager }}'
+worker_token:  '{{ hostvars[manager_node].swarm_info.swarm_facts.JoinTokens.Worker }}'
+
