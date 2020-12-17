@@ -9,14 +9,14 @@
 
 
 - name: DNS servers setup
-  hosts: dns_servers
+  hosts: DNS_SERVERS
   roles:
     - dns
 
 
 
 - name: DNS clients setup
-  hosts: dns_clients
+  hosts: DNS_CLIENTS
   roles:
     - dns_client
 
@@ -27,12 +27,12 @@
 
 
 
-####- name: Db servers setup
-####  hosts: db_servers
-####  roles:
-####    - docker_v2
-####    - docker_compose_v2
-####    - postgres
+- name: Db servers setup
+  hosts: DB_SERVERS
+  roles:
+    - docker_v2
+    - docker_compose_v2
+    - postgres
 
 
 
