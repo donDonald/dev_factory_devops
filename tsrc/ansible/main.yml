@@ -9,21 +9,26 @@
 
 
 - name: DNS servers setup
-  hosts: dns_servers
+  hosts: DNS_SERVERS
   roles:
     - dns
 
 
 
 - name: DNS clients setup
-  hosts: dns_clients
+  hosts: DNS_CLIENTS
   roles:
     - dns_client
 
 
 
+- name: Setup portainer as swarm
+  import_playbook: portainer.yml
+
+
+
 - name: Db servers setup
-  hosts: db_servers
+  hosts: DB_SERVERS
   roles:
     - docker_v2
     - docker_compose_v2
@@ -31,50 +36,28 @@
 
 
 
-- name: Swarm managers setup
-  hosts: swarm_managers
-  roles:
-    - python3
-    - docker_v2
-    - docker_swarm_manager
+####- name: Swarm managers setup
+####  hosts: swarm_managers
+####  roles:
+####    - python3
+####    - docker_v2
+####    - docker_swarm_manager
 
 
 
-- name: Swarm workers setup
-  hosts: swarm_workers
-  roles:
-    - python3
-    - docker_v2
-    - docker_swarm_worker
+####- name: Swarm workers setup
+####  hosts: swarm_workers
+####  roles:
+####    - python3
+####    - docker_v2
+####    - docker_swarm_worker
 
 
 
-- name: App servers setup
-  hosts: app_servers
-  roles:
-    - docker_swarm_service
-
-
-
-- name: Setup portainer
-  hosts: portainer
-  roles:
-    - python3
-    - docker_v2
-    - docker_compose_v2
-    - docker_swarm_manager
-    - portainer
-
-
-
-- name: Setup portainer agents
-  hosts: portainer_agents
-  roles:
-#   - python3
-#   - docker_v2
-#   - docker_compose_v2
-#   - docker_swarm_manager
-    - portainer_agent
+####- name: App servers setup
+####  hosts: app_servers
+####  roles:
+####    - docker_swarm_service
 
 
 

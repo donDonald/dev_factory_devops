@@ -12,6 +12,10 @@ servers=[
             {   # portainer
                 :host => 9000,
                 :guest => 9000,
+            },
+            {   # pagdmin
+                :host => 11111,
+                :guest => 11111,
             }
         ]
     },
@@ -22,9 +26,9 @@ servers=[
         :ram => 1024,
         :cpu => 1,
         :ports => [
-            {   # pagdmin
-                :host => 11111,
-                :guest => 11111,
+            {   # app server
+                :host => 3000,
+                :guest => 3000,
             }
         ]
     },
@@ -35,10 +39,6 @@ servers=[
         :ram => 1024,
         :cpu => 1,
         :ports => [
-            {   # app server
-                :host => 3000,
-                :guest => 3000,
-            }
         ]
     }
 ]

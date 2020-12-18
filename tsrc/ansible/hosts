@@ -1,16 +1,16 @@
-[dns_servers]
+[DNS_SERVERS]
 h1 ansible_ssh_user='{{ user_name }}'
 
 
 
-[dns_clients]
+[DNS_CLIENTS]
 h2 ansible_ssh_user='{{ user_name }}'
 h3 ansible_ssh_user='{{ user_name }}'
 
 
 
-[db_servers]
-h2 ansible_ssh_user='{{ user_name }}'
+[DB_SERVERS]
+h1 ansible_ssh_user='{{ user_name }}'
 
 
 
@@ -29,13 +29,15 @@ h3 ansible_ssh_user='{{ user_name }}'
 
 
 
-[portainer]
+[PORTAINER]
 h1 ansible_ssh_user='{{ user_name }}'
 
 
 
-[portainer_agents]
+[PORTAINER_AGENTS]
 h1 ansible_ssh_user='{{ user_name }}'
+h2 ansible_ssh_user='{{ user_name }}'
+h3 ansible_ssh_user='{{ user_name }}'
 
 
 
