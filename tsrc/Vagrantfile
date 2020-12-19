@@ -6,7 +6,7 @@ servers=[
         :hostname => "h1",
         :ip => "192.168.100.10",
         :box => "generic/ubuntu2004",
-        :ram => 1024,
+        :ram => 2048,
         :cpu => 1,
         :ports => [
             {   # portainer
@@ -16,6 +16,26 @@ servers=[
             {   # pagdmin
                 :host => 11111,
                 :guest => 11111,
+            },
+            {   # dockprom.cadvisor
+                :host => 8080,
+                :guest => 8080,
+            },
+            {   # dockprom.grafana
+                :host => 3000,
+                :guest => 3000,
+            },
+            {   # dockprom.prometheus
+                :host => 9090,
+                :guest => 9090,
+            },
+            {   # dockprom.pushgateway
+                :host => 9091,
+                :guest => 9091,
+            },
+            {   # dockprom.alertmanager
+                :host => 9093,
+                :guest => 9093,
             }
         ]
     },
@@ -26,21 +46,21 @@ servers=[
         :ram => 1024,
         :cpu => 1,
         :ports => [
-            {   # app server
-                :host => 3000,
-                :guest => 3000,
-            }
-        ]
-    },
-    {
-        :hostname => "h3",
-        :ip => "192.168.100.101",
-        :box => "generic/ubuntu2004",
-        :ram => 1024,
-        :cpu => 1,
-        :ports => [
+#           {   # app server
+#               :host => 3000,
+#               :guest => 3000,
+#           }
         ]
     }
+#   {
+#       :hostname => "h3",
+#       :ip => "192.168.100.101",
+#       :box => "generic/ubuntu2004",
+#       :ram => 1024,
+#       :cpu => 1,
+#       :ports => [
+#       ]
+#   }
 ]
 
 Vagrant.configure("2") do |config|

@@ -22,17 +22,37 @@
 
 
 
-- name: Setup portainer as swarm
-  import_playbook: portainer.yml
-
-
-
-- name: Db servers setup
-  hosts: DB_SERVERS
+- name: Setup docker
+  hosts: DOCKER
   roles:
+    - python3
     - docker_v2
     - docker_compose_v2
-    - postgres
+
+
+
+#   - name: Setup portainer - swarm monitoring tool
+#     import_playbook: portainer.yml
+
+
+
+- name: Setup dockprom - swarm monitoring tool
+  hosts: DOCKPROM
+  roles:
+    - python3
+    - docker_v2
+    - docker_compose_v2
+    - docker_swarm_manager
+    - dockprom_service
+
+
+
+#   - name: Db servers setup
+#     hosts: DB_SERVERS
+#     roles:
+#       - docker_v2
+#       - docker_compose_v2
+#       - postgres
 
 
 
@@ -65,11 +85,4 @@
 ####  hosts: cadvisor
 ####  roles:
 ####    - cadvisor
-
-
-
-####- name: Setup monitoring
-####  hosts: monitoring
-####  roles:
-####    - dockprom
 

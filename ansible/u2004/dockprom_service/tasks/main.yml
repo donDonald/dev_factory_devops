@@ -1,0 +1,24 @@
+---
+
+# https://blog.alexellis.io/docker-stacks-attachable-networks/
+
+
+
+- name: Checkout repo
+  git:
+    repo: 'https://github.com/donDonald/dockprom.git'
+    dest: /tmp/dockprom
+    #version: 61e96f805a70b6913fd44d252e7ccdee2eaf307e
+    #version: 0a8495beb59463f26131ee334d98216e9af8abb2 
+    version: 6589917a676b2ce1bd165fb7b75256fda14ad5c3
+    #version: 91a656e2f78cadb0c950daa2bf51249ffa8c2613
+  tags: dockprom_service
+
+
+
+- name: Deploy dockprom as stack
+  command: docker stack deploy --compose-file=/tmp/dockprom/docker-compose.v3.yml dockprom
+  args:
+    chdir: /tmp/dockprom
+  tags: dockprom_service
+

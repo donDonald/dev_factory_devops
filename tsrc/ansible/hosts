@@ -5,7 +5,14 @@ h1 ansible_ssh_user='{{ user_name }}'
 
 [DNS_CLIENTS]
 h2 ansible_ssh_user='{{ user_name }}'
-h3 ansible_ssh_user='{{ user_name }}'
+#h3 ansible_ssh_user='{{ user_name }}'
+
+
+
+[DOCKER]
+h1 ansible_ssh_user='{{ user_name }}'
+h2 ansible_ssh_user='{{ user_name }}'
+# h3 ansible_ssh_user='{{ user_name }}'
 
 
 
@@ -15,17 +22,17 @@ h1 ansible_ssh_user='{{ user_name }}'
 
 
 [swarm_managers]
-h3 ansible_ssh_user='{{ user_name }}'
+#h3 ansible_ssh_user='{{ user_name }}'
 
 
 
 [swarm_workers]
-h3 ansible_ssh_user='{{ user_name }}'
+#h3 ansible_ssh_user='{{ user_name }}'
 
 
 
 [app_servers]
-h3 ansible_ssh_user='{{ user_name }}'
+#h3 ansible_ssh_user='{{ user_name }}'
 
 
 
@@ -37,15 +44,15 @@ h1 ansible_ssh_user='{{ user_name }}'
 [PORTAINER_AGENTS]
 h1 ansible_ssh_user='{{ user_name }}'
 h2 ansible_ssh_user='{{ user_name }}'
-h3 ansible_ssh_user='{{ user_name }}'
+#h3 ansible_ssh_user='{{ user_name }}'
+
+
+
+[DOCKPROM]
+h1 ansible_ssh_user='{{ user_name }}'
 
 
 
 #   [cadvisor]
-#   h1 ansible_ssh_user='{{ user_name }}'
-
-
-
-#   [monitoring]
 #   h1 ansible_ssh_user='{{ user_name }}'
 
