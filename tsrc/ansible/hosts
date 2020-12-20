@@ -44,12 +44,17 @@ h1 ansible_ssh_user='{{ user_name }}'
 [PORTAINER_AGENTS]
 h1 ansible_ssh_user='{{ user_name }}'
 h2 ansible_ssh_user='{{ user_name }}'
-#h3 ansible_ssh_user='{{ user_name }}'
 
 
 
 [DOCKPROM]
 h1 ansible_ssh_user='{{ user_name }}'
+
+
+
+[DOCKPROM_AGENTS]
+h1 ansible_ssh_user='{{ user_name }}'
+h2 ansible_ssh_user='{{ user_name }}'
 
 
 

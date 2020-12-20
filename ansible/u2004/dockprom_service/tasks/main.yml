@@ -1,24 +1,115 @@
 ---
 
 # https://blog.alexellis.io/docker-stacks-attachable-networks/
+####### !!!!!!!!!!!!!!!!!!!!!
+# cd
+# git clone https://github.com/stefanprodan/swarmprom.git
+# cd swarmprom/
 
-
+#   vagrant@h1:~/swarmprom$ cat ./yeee.sh 
+#   ADMIN_USER=admin
+#   ADMIN_PASSWORD=admin
+#   SLACK_URL=https://hooks.slack.com/services/TOKEN
+#   SLACK_CHANNEL=devops-alerts
+#   SLACK_USER=alertmanager
+#   docker stack deploy -c ./docker-compose.yml mon
 
 - name: Checkout repo
   git:
-    repo: 'https://github.com/donDonald/dockprom.git'
-    dest: /tmp/dockprom
-    #version: 61e96f805a70b6913fd44d252e7ccdee2eaf307e
-    #version: 0a8495beb59463f26131ee334d98216e9af8abb2 
-    version: 6589917a676b2ce1bd165fb7b75256fda14ad5c3
-    #version: 91a656e2f78cadb0c950daa2bf51249ffa8c2613
+    repo: 'https://github.com/stefanprodan/swarmprom.git'
+    dest: /tmp/swarmprom
+    version: 28957ff51aea9d69fab079783096555fe9bc44b4
   tags: dockprom_service
 
 
 
-- name: Deploy dockprom as stack
-  command: docker stack deploy --compose-file=/tmp/dockprom/docker-compose.v3.yml dockprom
+- name: Deploy swarmprom as stack
+  command: docker stack deploy --compose-file=/tmp/swarmprom/docker-compose.yml dockprom
   args:
-    chdir: /tmp/dockprom
+    chdir: /tmp/swarmprom
   tags: dockprom_service
 
+
+
+#   vagrant@h1:~$ docker service ls
+#   ID             NAME                        MODE         REPLICAS   IMAGE                                          PORTS
+#   eweot5txfmyb   dockprom_alertmanager       replicated   1/1        stefanprodan/swarmprom-alertmanager:v0.14.0    
+#   pwvbotfbe5vy   dockprom_caddy              replicated   1/1        stefanprodan/caddy:latest                      *:3000->3000/tcp, *:9090->9090/tcp, *:9093-9094->9093-9094/tcp
+#   qmpd1ogxri01   dockprom_cadvisor           global       2/2        google/cadvisor:latest                         
+#   frfvo4uk7ru0   dockprom_dockerd-exporter   global       2/2        stefanprodan/caddy:latest                      
+#   8r0mmptsdhdm   dockprom_grafana            replicated   1/1        stefanprodan/swarmprom-grafana:5.3.4           
+#   sjrjpt5qqdgu   dockprom_node-exporter      global       2/2        stefanprodan/swarmprom-node-exporter:v0.16.0   
+#   vat3kbsg3p49   dockprom_prometheus         replicated   1/1        stefanprodan/swarmprom-prometheus:v2.5.0       
+#   p2qd2ypy5pyx   dockprom_unsee              replicated   1/1        cloudflare/unsee:v0.8.0  
+
+
+#   vagrant@h1:~$ docker ps
+#   CONTAINER ID   IMAGE                                          COMMAND                  CREATED          STATUS                    PORTS      NAMES
+#   de0dcf37e7c2   stefanprodan/caddy:latest                      "/sbin/tini -- caddy…"   46 minutes ago   Up 45 minutes (healthy)              dockprom_caddy.1.9r1go5zcumcsdcuukjvb6ge2l
+#   3fada33ee01a   stefanprodan/swarmprom-grafana:5.3.4           "/run.sh"                46 minutes ago   Up 45 minutes             3000/tcp   dockprom_grafana.1.tbt343ba2npwoy0m0j0btgy48
+#   abb2e47b87a6   stefanprodan/swarmprom-prometheus:v2.5.0       "/etc/prometheus/doc…"   46 minutes ago   Up 45 minutes             9090/tcp   dockprom_prometheus.1.xjnn1lfhjrj9d1w7ipmp3cg9w
+#   4aede2310dbd   stefanprodan/swarmprom-node-exporter:v0.16.0   "/etc/node-exporter/…"   46 minutes ago   Up 46 minutes             9100/tcp   dockprom_node-exporter.a14biotx6dr212reyhcko7p6q.a8ww40209dalhi4mf8qyonaj1
+#   ae2847576f23   stefanprodan/swarmprom-alertmanager:v0.14.0    "/etc/alertmanager/d…"   46 minutes ago   Up 46 minutes             9093/tcp   dockprom_alertmanager.1.vcvxeipig8gdjkndjgbwdedq2
+#   e4f18407f485   google/cadvisor:latest                         "/usr/bin/cadvisor -…"   46 minutes ago   Up 46 minutes             8080/tcp   dockprom_cadvisor.a14biotx6dr212reyhcko7p6q.71146s1ej6etyv3viofjklxq7
+#   427b394d0934   stefanprodan/caddy:latest                      "/sbin/tini -- caddy…"   46 minutes ago   Up 46 minutes                        dockprom_dockerd-exporter.a14biotx6dr212reyhcko7p6q.y4n9zj9mgbngrool2mztnxz5m
+
+
+#   vagrant@h2:~$ docker service ls
+#   Error response from daemon: This node is not a swarm manager. Worker nodes can't be used to view or modify cluster state. Please run this command on a manager node or promote the current node to a manager.
+#   vagrant@h2:~$ docker ps
+#   CONTAINER ID   IMAGE                                          COMMAND                  CREATED          STATUS          PORTS      NAMES
+#   c317cbb654d9   stefanprodan/swarmprom-node-exporter:v0.16.0   "/etc/node-exporter/…"   46 minutes ago   Up 46 minutes   9100/tcp   dockprom_node-exporter.8z0f4s60t599orgcf41h3t89q.79k9tbqj31ddf83s8liwn1pxx
+#   d3bf1aae9dab   cloudflare/unsee:v0.8.0                        "/unsee"                 46 minutes ago   Up 46 minutes   8080/tcp   dockprom_unsee.1.ta0xve9ijqbph6vz3n4zqhys6
+#   64d53893a72c   google/cadvisor:latest                         "/usr/bin/cadvisor -…"   46 minutes ago   Up 46 minutes   8080/tcp   dockprom_cadvisor.8z0f4s60t599orgcf41h3t89q.bcgqoqjf13onbxtwdmi50jnlr
+#   877f87245bac   stefanprodan/caddy:latest                      "/sbin/tini -- caddy…"   47 minutes ago   Up 47 minutes              dockprom_dockerd-exporter.8z0f4s60t599orgcf41h3t89q.ezl1twbb8qgs46ve5xhdaw7m6
+
+
+
+
+
+
+
+
+#   vagrant@h1:~$ docker service ls
+#   ID             NAME                        MODE         REPLICAS   IMAGE                                          PORTS
+#   mz6xug8vf4m7   dockprom_alertmanager       replicated   1/1        stefanprodan/swarmprom-alertmanager:v0.14.0    
+#   pgdfibalo3en   dockprom_caddy              replicated   1/1        stefanprodan/caddy:latest                      *:3000->3000/tcp, *:9090->9090/tcp, *:9093-9094->9093-9094/tcp
+#   1t3sqfksv234   dockprom_cadvisor           global       2/2        google/cadvisor:latest                         
+#   0a2cgupwpoko   dockprom_dockerd-exporter   global       2/2        stefanprodan/caddy:latest                      
+#   pw52e0iqhvei   dockprom_grafana            replicated   1/1        stefanprodan/swarmprom-grafana:5.3.4           
+#   r1zsg8bq43hd   dockprom_node-exporter      global       2/2        stefanprodan/swarmprom-node-exporter:v0.16.0   
+#   h4n1w67s38wq   dockprom_prometheus         replicated   1/1        stefanprodan/swarmprom-prometheus:v2.5.0       
+#   x58b61l4mqz2   dockprom_unsee              replicated   1/1        cloudflare/unsee:v0.8.0                        
+#   vagrant@h1:~$ 
+#   vagrant@h1:~$ docker node ls
+#   ID                            HOSTNAME   STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+#   o6xvrs5tqfgxi2d1q7w7h2lzr *   h1         Ready     Active         Leader           19.03.13
+#   kdf59awq8ukqwjll8g0hi2lie     h2         Ready     Active                          19.03.13
+#   vagrant@h1:~$ 
+#   vagrant@h1:~$ docker ps
+#   CONTAINER ID   IMAGE                                          COMMAND                  CREATED          STATUS                    PORTS      NAMES
+#   aeac2035dfda   stefanprodan/swarmprom-grafana:5.3.4           "/run.sh"                19 minutes ago   Up 19 minutes             3000/tcp   dockprom_grafana.1.im9ovoviddijv247rforrn4av
+#   84a8fa8c974a   stefanprodan/caddy:latest                      "/sbin/tini -- caddy…"   19 minutes ago   Up 19 minutes (healthy)              dockprom_caddy.1.2gt955ejb2vd4n22uorxqy9q0
+#   f753b25072be   stefanprodan/swarmprom-node-exporter:v0.16.0   "/etc/node-exporter/…"   19 minutes ago   Up 19 minutes             9100/tcp   dockprom_node-exporter.o6xvrs5tqfgxi2d1q7w7h2lzr.hxleu8hqqh2n4me7z0qt55jry
+#   463276133a2c   stefanprodan/swarmprom-alertmanager:v0.14.0    "/etc/alertmanager/d…"   19 minutes ago   Up 19 minutes             9093/tcp   dockprom_alertmanager.1.pnimwqh0nj193x6v5llxd6pyi
+#   419d4a3ffbd5   google/cadvisor:latest                         "/usr/bin/cadvisor -…"   19 minutes ago   Up 19 minutes             8080/tcp   dockprom_cadvisor.o6xvrs5tqfgxi2d1q7w7h2lzr.fldewf2wbg89c5i4hiybr4gtm
+#   d943d6f19afa   stefanprodan/swarmprom-prometheus:v2.5.0       "/etc/prometheus/doc…"   19 minutes ago   Up 19 minutes             9090/tcp   dockprom_prometheus.1.qy9a4o4og16yw62q2219m1bls
+#   221464c913d0   stefanprodan/caddy:latest                      "/sbin/tini -- caddy…"   19 minutes ago   Up 19 minutes                        dockprom_dockerd-exporter.o6xvrs5tqfgxi2d1q7w7h2lzr.qnqfsbveup0e6imy4x14c0u3z
+#   vagrant@h1:~$ 
+#   vagrant@h1:~$ exit
+#   logout
+#   Connection to h1 closed.
+#   ptaranov@ptswt3:~/src/donDonald/devops/tsrc/ansible$ 
+#   ptaranov@ptswt3:~/src/donDonald/devops/tsrc/ansible$ H2
+#   Last login: Mon Dec 21 10:24:07 2020 from 192.168.100.1
+#   vagrant@h2:~$ 
+#   vagrant@h2:~$ docker ps
+#   CONTAINER ID   IMAGE                                          COMMAND                  CREATED          STATUS          PORTS      NAMES
+#   679c24dce68b   stefanprodan/swarmprom-node-exporter:v0.16.0   "/etc/node-exporter/…"   20 minutes ago   Up 20 minutes   9100/tcp   dockprom_node-exporter.kdf59awq8ukqwjll8g0hi2lie.tm815748ae35n87abd67gsrqb
+#   0da513e5bf49   cloudflare/unsee:v0.8.0                        "/unsee"                 20 minutes ago   Up 20 minutes   8080/tcp   dockprom_unsee.1.gzah8etmzefrt0h2mkuqzs72n
+#   85fa64c41af1   google/cadvisor:latest                         "/usr/bin/cadvisor -…"   20 minutes ago   Up 20 minutes   8080/tcp   dockprom_cadvisor.kdf59awq8ukqwjll8g0hi2lie.nnrxa2pqojoridpenk6mx3fnq
+#   99868f3c9d38   stefanprodan/caddy:latest                      "/sbin/tini -- caddy…"   20 minutes ago   Up 20 minutes              dockprom_dockerd-exporter.kdf59awq8ukqwjll8g0hi2lie.775e2fkkr4mbk2j4ri7i16yyc
+
+
+
+# https://prometheus.io/docs/guides/node-exporter/

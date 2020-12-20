@@ -31,19 +31,13 @@
 
 
 
-#   - name: Setup portainer - swarm monitoring tool
+#   - name: Setup PORTAINER - swarm monitoring tool
 #     import_playbook: portainer.yml
 
 
 
-- name: Setup dockprom - swarm monitoring tool
-  hosts: DOCKPROM
-  roles:
-    - python3
-    - docker_v2
-    - docker_compose_v2
-    - docker_swarm_manager
-    - dockprom_service
+- name: Setup DOCKPROM - swarm monitoring tool
+  import_playbook: dockprom.yml
 
 
 

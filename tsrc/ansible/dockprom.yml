@@ -1,0 +1,28 @@
+
+- name: Setup dockprom - swarm monitoring tool
+  hosts: DOCKPROM
+  vars:
+    manager_group: 'DOCKPROM'
+  roles:
+    - python3
+    - docker_v2
+    - docker_swarm_manager
+
+
+
+- name: Setup dockprom swarm workers(agents)
+  hosts: DOCKPROM_AGENTS
+  vars:
+    manager_group: 'DOCKPROM'
+  roles:
+    - python3
+    - docker_v2
+    - docker_swarm_worker
+
+
+
+- name: Deploy dockprom
+  hosts: DOCKPROM
+  roles:
+    - dockprom_service
+
