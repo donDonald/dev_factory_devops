@@ -4,7 +4,7 @@
 servers=[
     {
         :hostname => "h1",
-        :ip => "192.168.100.10",
+        :ip => "192.168.200.10",
         :box => "generic/ubuntu2004",
         :ram => 2048,
         :cpu => 1,
@@ -28,27 +28,22 @@ servers=[
             {   # dockprom.prometheus
                 :host => 9090,
                 :guest => 9090,
+            },
+            {   # dockprom.node-exporter
+                :host => 9100,
+                :guest => 9100,
             }
         ]
     },
     {
         :hostname => "h2",
-        :ip => "192.168.100.100",
+        :ip => "192.168.200.100",
         :box => "generic/ubuntu2004",
         :ram => 1024,
         :cpu => 1,
         :ports => [
         ]
     }
-#   {
-#       :hostname => "h3",
-#       :ip => "192.168.100.101",
-#       :box => "generic/ubuntu2004",
-#       :ram => 1024,
-#       :cpu => 1,
-#       :ports => [
-#       ]
-#   }
 ]
 
 Vagrant.configure("2") do |config|

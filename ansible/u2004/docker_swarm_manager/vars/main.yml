@@ -1,4 +1,4 @@
 ---
 
-advertise_address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:2377"
+advertise_address: "192.168.200.10:2377"
 

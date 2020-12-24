@@ -109,3 +109,48 @@ $ curl localhost:3000
 $ vagrant halt
 ```
 
+
+### To create swarm manually 
+
+https://docs.docker.com/engine/reference/commandline/swarm_init/
+https://upcloud.com/community/tutorials/docker-swarm-orchestration/
+
+
+
+h1:
+```
+docker swarm init --advertise-addr 192.168.200.10
+Swarm initialized: current node (m98v86a7q93zi5rjun8i6p15b) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-0jjl24jwksshl7ny1wbc0ftrszxpy6bjuosy5naic2n30ke6sk-e308lic59tmoa50s3tfslhf6p 192.168.200.10:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+```
+
+
+
+h2:
+```
+$ docker swarm join --token SWMTKN-1-0jjl24jwksshl7ny1wbc0ftrszxpy6bjuosy5naic2n30ke6sk-e308lic59tmoa50s3tfslhf6p 192.168.200.10:2377
+This node joined a swarm as a worker.
+```
+
+
+
+h1:
+```
+$ docker node ls
+ID                            HOSTNAME   STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+m98v86a7q93zi5rjun8i6p15b *   h1         Ready     Active         Leader           19.03.13
+n0521us8vhnfvf18ii7edvfry     h2         Ready     Active                          19.03.13
+```
+
+
+
+h1:
+```
+$ docker network create --driver overlay --attachable --subnet 10.0.0.0/8 AAAAAA
+$ docker service create --replicas 1 --name nginx --network AAAAAA --publish 80:80 nginx
+```

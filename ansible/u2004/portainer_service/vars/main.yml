@@ -1,6 +1,6 @@
 ---
 
-advertise_address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:2377"
+advertise_address: "192.168.200.10:2377"
 tag: "2.0.0"
 src_port: 9000
 dst_port: 9000
