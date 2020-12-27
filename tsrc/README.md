@@ -154,3 +154,27 @@ h1:
 $ docker network create --driver overlay --attachable --subnet 10.0.0.0/8 AAAAAA
 $ docker service create --replicas 1 --name nginx --network AAAAAA --publish 80:80 nginx
 ```
+
+
+dockprom
+    https://github.com/stefanprodan/dockprom.git 
+        prom/prometheus:v2.23.0
+        grafana/grafana:7.3.6
+        prom/alertmanager:v0.21.0
+        prom/node-exporter:v1.0.1
+
+        gcr.io/cadvisor/cadvisor:v0.38.6
+        prom/pushgateway:v1.3.1
+        stefanprodan/caddy
+
+swarmprom
+    https://github.com/stefanprodan/swarmprom.git 
+        stefanprodan/swarmprom-prometheus:v2.5.0
+        stefanprodan/swarmprom-grafana:5.3.4
+        stefanprodan/swarmprom-alertmanager:v0.14.0
+        stefanprodan/swarmprom-node-exporter:v0.16.0
+
+        google/cadvisor
+        cloudflare/unsee:v0.8.0
+        stefanprodan/caddy
+

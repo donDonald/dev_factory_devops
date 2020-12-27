@@ -1,34 +1,9 @@
 ---
 
-# https://blog.alexellis.io/docker-stacks-attachable-networks/
-####### !!!!!!!!!!!!!!!!!!!!!
-# cd
-# git clone https://github.com/stefanprodan/swarmprom.git
-# cd swarmprom/
-
-#   vagrant@h1:~/swarmprom$ cat ./yeee.sh 
-#   ADMIN_USER=admin
-#   ADMIN_PASSWORD=admin
-#   SLACK_URL=https://hooks.slack.com/services/TOKEN
-#   SLACK_CHANNEL=devops-alerts
-#   SLACK_USER=alertmanager
-#   docker stack deploy -c ./docker-compose.yml mon
-
 - name: Checkout repo
   git:
-    repo: 'https://github.com/stefanprodan/swarmprom.git'
-    dest: /tmp/swarmprom
-    version: 28957ff51aea9d69fab079783096555fe9bc44b4
+    repo: 'https://github.com/stefanprodan/dockprom.git'
+    dest: /tmp/dockprom
+    version: 1210bf77580113370159aec0c5fdaceb9df8d433
   tags: dockprom_service
 
-
-
-- name: Deploy swarmprom as stack
-  command: docker stack deploy --compose-file=/tmp/swarmprom/docker-compose.yml dockprom
-  args:
-    chdir: /tmp/swarmprom
-  tags: dockprom_service
-
-
-
-# https://prometheus.io/docs/guides/node-exporter/
