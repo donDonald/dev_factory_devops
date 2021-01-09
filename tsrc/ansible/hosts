@@ -36,12 +36,7 @@ h1 ansible_ssh_user='{{ user_name }}'
 
 
 
-[DOCKPROM_AGENTS]
+[DOCKPROM_EXPORTERS]
 h1 ansible_ssh_user='{{ user_name }}'
 h2 ansible_ssh_user='{{ user_name }}'
-
-
-
-#   [cadvisor]
-#   h1 ansible_ssh_user='{{ user_name }}'
 

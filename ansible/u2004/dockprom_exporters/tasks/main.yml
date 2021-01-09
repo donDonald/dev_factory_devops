@@ -1,0 +1,25 @@
+---
+
+- name: Checkout repo
+  git:
+    repo: 'https://github.com/donDonald/dockprom.git'
+    dest: /home/{{ user_name }}/d_exporters
+    version: 4c2b86c47c31b011ca490560615fc7eff875bf96
+  tags: dockprom_exporters
+
+
+
+- name: git checkout to proper version
+  command: git checkout --track origin/movi9ng-to-host-hetwork-mode
+  args:
+    chdir: /home/{{ user_name }}/d_exporters
+  tags: dockprom_exporters
+
+
+
+- name: Launch exportes like nodeexporter, cadvisor, whatever...
+  command: docker-compose -f ./docker-compose.exporters.yml up -d --build --force-recreate
+  args:
+    chdir: /home/{{ user_name }}/d_exporters
+  tags: dockprom_exporters
+
