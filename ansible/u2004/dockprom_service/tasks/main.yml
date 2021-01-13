@@ -3,18 +3,10 @@
 - name: Checkout repo
   git:
     repo: 'https://github.com/donDonald/dockprom.git'
+    force: true
     dest: /home/{{ user_name }}/d_service
-    version: 4c2b86c47c31b011ca490560615fc7eff875bf96
+    version: '{{ version }}'
   tags: dockprom_service
-
-
-
-- name: git checkout to proper version
-  command: git checkout --track origin/movi9ng-to-host-hetwork-mode
-  args:
-    chdir: /home/{{ user_name }}/d_service
-  tags: dockprom_service
-
 
 
 
@@ -26,13 +18,38 @@
 
 
 
-
 - name: Deploy grafana config
   template:
     src: grafana/provisioning/datasources/datasource.yml
     dest: /home/{{ user_name }}/d_service/grafana/provisioning/datasources/datasource.yml
   tags: dockprom_service
 
+
+
+- name: Deploy grafana 11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json dashboard
+  copy:
+    src: grafana/provisioning/dashboards/11074.json
+    dest: /home/{{ user_name }}/d_service/grafana/provisioning/dashboards/11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json
+    #dest: /home/{{ user_name }}/11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json
+  tags: dockprom_service
+
+
+
+- name: Deploy grafana 1860.node-exporter-full_rev21.json dashboard
+  copy:
+    src: grafana/provisioning/dashboards/1860.json
+    dest: /home/{{ user_name }}/d_service/grafana/provisioning/dashboards/1860.node-exporter-full_rev21.json
+    #dest: /home/{{ user_name }}/1860.node-exporter-full_rev21.json
+  tags: dockprom_service
+
+
+
+- name: Deploy grafana 10180.kds-linux-hosts_rev1.json dashboard
+  copy:
+    src: grafana/provisioning/dashboards/10180.json
+    dest: /home/{{ user_name }}/d_service/grafana/provisioning/dashboards/10180.kds-linux-hosts_rev1.json
+    #dest: /home/{{ user_name }}/10180.kds-linux-hosts_rev1.json
+  tags: dockprom_service
 
 
 

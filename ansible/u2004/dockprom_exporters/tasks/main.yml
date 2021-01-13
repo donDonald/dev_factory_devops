@@ -3,16 +3,9 @@
 - name: Checkout repo
   git:
     repo: 'https://github.com/donDonald/dockprom.git'
+    force: true
     dest: /home/{{ user_name }}/d_exporters
-    version: 4c2b86c47c31b011ca490560615fc7eff875bf96
-  tags: dockprom_exporters
-
-
-
-- name: git checkout to proper version
-  command: git checkout --track origin/movi9ng-to-host-hetwork-mode
-  args:
-    chdir: /home/{{ user_name }}/d_exporters
+    version: '{{ version }}'
   tags: dockprom_exporters
 
 

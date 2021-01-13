@@ -130,3 +130,28 @@ Other expressions:
     - rate(node_cpu_seconds_total{mode="system"}[1m])
     - checkout what 'wget -qO- cadvisor:8080/metrics' returns
 
+
+
+### Grafana dashboards
+
+
+
+###### For node-exporter
+
+
+
+
+These look ok:
+* https://grafana.com/grafana/dashboards/11074 (1 Node Exporter for Prometheus Dashboard EN v20201010)
+* https://grafana.com/grafana/dashboards/10180 (Linux Hosts Metrics | Base)
+* https://grafana.com/grafana/dashboards/1860 (Prometheus Node Exporter Full)
+
+
+
+
+These suxx:
+* https://grafana.com/grafana/dashboards/405 (Node Exporter Server Metrics)
+* https://grafana.com/grafana/dashboards/10242 (Node Exporter Full with Node Name)
+* https://grafana.com/grafana/dashboards/10566 (Docker and OS metrics ( cadvisor, node_exporter ))
+* https://grafana.com/grafana/dashboards/179 (Docker and Host Monitoring w/ Prometheus)
+
