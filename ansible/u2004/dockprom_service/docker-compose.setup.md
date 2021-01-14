@@ -1,120 +1,129 @@
 
 ### Intro
-    Manuals on prometheus and nodeexporter + cAdvisor setup
+    Manuals on prometheus, grafana and exporters(nodeexporter + cadvisor) setup
     Everything will run using docker-compose
 
 
 
-### Setup prometheus + all sources using docker-compose
+### Clone repo
 ```
-$ git clone https://github.com/stefanprodan/dockprom.git
+$ git clone https://github.com/donDonald/dockprom.git
 $ cd dockprom
-$ docker-compose -f ./docker-compose.pt.yml up -d --build --force-recreate
+$ git checkout movi9ng-to-host-hetwork-mode
+```
 
 
 
-$ docker-compose -f ./docker-compose.pt.yml ps
-    Name                  Command                  State                                                   Ports                                             
--------------------------------------------------------------------------------------------------------------------------------------------------------------
-caddy          /sbin/tini -- caddy -agree ...   Up             0.0.0.0:3000->3000/tcp, 0.0.0.0:9090->9090/tcp, 0.0.0.0:9091->9091/tcp, 0.0.0.0:9093->9093/tcp
-cadvisor       /usr/bin/cadvisor -logtostderr   Up (healthy)   8080/tcp                                                                                      
-grafana        /run.sh                          Up             3000/tcp                                                                                      
-nodeexporter   /bin/node_exporter --path. ...   Up             9100/tcp                                                                                      
-prometheus     /bin/prometheus --config.f ...   Up             9090/tcp 
+### Setup exporters(nodeexporter and cadvisor)
+```
+$ docker-compose -f ./docker-compose.exporters.yml up -d --build --force-recreate
+Creating nodeexporter ... done
+Creating cadvisor     ... done
+
+$ docker-compose -f ./docker-compose.exporters.yml ps
+    Name                  Command                  State       Ports
+--------------------------------------------------------------------
+cadvisor       /usr/bin/cadvisor -logtostderr   Up (healthy)        
+nodeexporter   /bin/node_exporter --path. ...   Up                  
+
+$ docker ps
+CONTAINER ID   IMAGE                              COMMAND                  CREATED              STATUS                        PORTS     NAMES
+8e909f48ccd2   gcr.io/cadvisor/cadvisor:v0.38.6   "/usr/bin/cadvisor -…"   About a minute ago   Up About a minute (healthy)             cadvisor
+ecc4aa7d4741   prom/node-exporter:v1.0.1          "/bin/node_exporter …"   About a minute ago   Up About a minute                       nodeexporter
+```
 
 
+
+###### Check exporters work
+    Since every exporter is http server, simply poll it like this:
+```
+    $ curl localhost:9100/metrics
+    $ curl localhost:8080/metrics
+```
+
+
+
+### Setup prometheus, grafana and the rest
+```
+$ docker-compose -f ./docker-compose.prometheus.host-net.yml up -d --build --force-recreate
+...
+Creating grafana    ... done
+Creating prometheus ... done
+
+$ docker-compose -f ./docker-compose.prometheus.host-net.yml ps
+   Name                 Command               State   Ports
+-----------------------------------------------------------
+grafana      /run.sh                          Up           
+prometheus   /bin/prometheus --config.f ...   Up           
+
+$ docker ps
+CONTAINER ID   IMAGE                              COMMAND                  CREATED              STATUS                    PORTS     NAMES
+296456bd5e61   prom/prometheus:v2.24.0            "/bin/prometheus --c…"   About a minute ago   Up 59 seconds                       prometheus
+4a55fc7a4a38   grafana/grafana:7.3.6              "/run.sh"                About a minute ago   Up 59 seconds                       grafana
+8e909f48ccd2   gcr.io/cadvisor/cadvisor:v0.38.6   "/usr/bin/cadvisor -…"   10 minutes ago       Up 10 minutes (healthy)             cadvisor
+ecc4aa7d4741   prom/node-exporter:v1.0.1          "/bin/node_exporter …"   10 minutes ago       Up 10 minutes                       nodeexporter
 
 $ docker network ls
-NETWORK ID          NAME                   DRIVER              SCOPE
-d700fadb3028        bridge                 bridge              local
-90dd35ec0f7d        dockprom_monitor-net   bridge              local
-cd76f883677e        host                   host                local
-6ba5f58b1408        none    
+NETWORK ID     NAME      DRIVER    SCOPE
+4f29fe6cf5ec   bridge    bridge    local
+cd76f883677e   host      host      local
+6ba5f58b1408   none      null      local
 
-
-
-$ docker network inspect dockprom_monitor-net
+$ docker network inspect host
 [
     {
-        "Name": "dockprom_monitor-net",
-        "Id": "90dd35ec0f7d1e0b6c254f0f2194d5a3d2e4eb9dabd1ea945e6abb5eb251414e",
-        "Created": "2021-01-05T23:13:05.449000464+03:00",
+        "Name": "host",
+        "Id": "cd76f883677e869ac047d27dd16cee888f99e6072929f15096c439543b69e7d8",
+        "Created": "2020-06-27T12:35:39.906740051+03:00",
         "Scope": "local",
-        "Driver": "bridge",
+        "Driver": "host",
         "EnableIPv6": false,
         "IPAM": {
             "Driver": "default",
             "Options": null,
-            "Config": [
-                {
-                    "Subnet": "172.22.0.0/16",
-                    "Gateway": "172.22.0.1"
-                }
-            ]
+            "Config": []
         },
         "Internal": false,
-        "Attachable": true,
+        "Attachable": false,
         "Ingress": false,
         "ConfigFrom": {
             "Network": ""
         },
         "ConfigOnly": false,
         "Containers": {
-            "03abadad8218603fbf7164bdd7d369f8a1a1c655ecc690a3d0af29fc117341b1": {
+            "296456bd5e61e6917b9a3f46615abdd191daf57b3df128dbb33c0cc827105e08": {
                 "Name": "prometheus",
-                "EndpointID": "9e84f4dfc949e696183167ea20b5acc4826942a9ffe157170ca01e8190460752",
-                "MacAddress": "02:42:ac:16:00:05",
-                "IPv4Address": "172.22.0.5/16",
+                "EndpointID": "b524aaacec5bd1f6d4f949d402ba38040be6519041ead450cb90c3af9cb1dade",
+                "MacAddress": "",
+                "IPv4Address": "",
                 "IPv6Address": ""
             },
-            "0fb66d63bdac969fff7db58d2978f24c1663394bb32863c6d26df7e4f6cd5dc5": {
+            "4a55fc7a4a380cc7f98aaa48799e222cd10c1ad2d9a01a0314deb008158173ec": {
                 "Name": "grafana",
-                "EndpointID": "e1872ca0638207ff9cf13cc6bb628ebafc18ff2b767af19ec2b65234e91de7ed",
-                "MacAddress": "02:42:ac:16:00:02",
-                "IPv4Address": "172.22.0.2/16",
+                "EndpointID": "b19d33efb7d02640b5059aa20976bc13e56ac0ddba0c01d584db92e13df5517a",
+                "MacAddress": "",
+                "IPv4Address": "",
                 "IPv6Address": ""
             },
-            "66ddc2ae9599538008e18da88d0a00aff94039b6e0652bfe348a22ab5dd98825": {
-                "Name": "caddy",
-                "EndpointID": "92891e43b118d467002ef14be8b96a2131a81fc7302f9a5e9936110f68748503",
-                "MacAddress": "02:42:ac:16:00:06",
-                "IPv4Address": "172.22.0.6/16",
-                "IPv6Address": ""
-            },
-            "6c5f3458ad23acf7f77455d1412bc51ef8a90f82ce8461bc1eb63afde3c2a4ce": {
+            "8e909f48ccd29703163dccb4758573c23a426c1ce4b7de44a51b63433bcb5dc5": {
                 "Name": "cadvisor",
-                "EndpointID": "8e9a6518f533d1edb6fa5ab0d744fb0e3c65de7bd22aa6a95e18f503a99227fc",
-                "MacAddress": "02:42:ac:16:00:03",
-                "IPv4Address": "172.22.0.3/16",
+                "EndpointID": "fb28d4df4ea01f843b62782696a0caa023a3de598d8d2c96364a2a55d55f54c2",
+                "MacAddress": "",
+                "IPv4Address": "",
                 "IPv6Address": ""
             },
-            "8c76f23efc18bf893d25ba7a5a2ec70c92997ca04c13f9d8f7f1c04c7b7a089e": {
+            "ecc4aa7d47410fc898613e296b4f029448200e7debc098e25ee5c6acb398cf1b": {
                 "Name": "nodeexporter",
-                "EndpointID": "5e1db173dfa5ccccf15b472dd2b6feefd14dd93a1c1a9e1b7c3cedda0b0a509e",
-                "MacAddress": "02:42:ac:16:00:04",
-                "IPv4Address": "172.22.0.4/16",
+                "EndpointID": "c89d6b398c9048a25352b89db6a5648e25b32579b000226fa9f2c337b3de8593",
+                "MacAddress": "",
+                "IPv4Address": "",
                 "IPv6Address": ""
             }
         },
         "Options": {},
-        "Labels": {
-            "com.docker.compose.network": "monitor-net",
-            "com.docker.compose.project": "dockprom",
-            "com.docker.compose.version": "1.25.5"
-        }
+        "Labels": {}
     }
 ]
-```
-
-
-
-###### Check nodeexporter and cAdvisor work
-Since nodeexorter cAdvisor are http servers, lets poll like this:
-```
-$ docker exec -it prometheus sh
-      $ wget -qO- nodeexporter:9100/metrics
-      $ wget -qO- cadvisor:8080/metrics
-      $ exit
 ```
 
 
@@ -122,7 +131,7 @@ $ docker exec -it prometheus sh
 ###### Check prometheus works
 https://prometheus.io/docs/guides/node-exporter/#exploring-node-exporter-metrics-through-the-prometheus-expression-browser
 
-- browser: localhost:9090/graph
+- browser: http://localhost:9090/graph
 - Expression bar: node_uname_info
 - Click execute and will get something back
 
@@ -132,14 +141,16 @@ Other expressions:
 
 
 
+###### Check grafana works
+- browser: http://localhost:3000
+
+
+
 ### Grafana dashboards
 
 
 
 ###### For node-exporter
-
-
-
 
 These look ok:
 * https://grafana.com/grafana/dashboards/11074 (1 Node Exporter for Prometheus Dashboard EN v20201010)

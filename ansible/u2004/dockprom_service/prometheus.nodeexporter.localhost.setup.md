@@ -63,10 +63,10 @@
 ###### Check prometheus works
 https://prometheus.io/docs/guides/node-exporter/#exploring-node-exporter-metrics-through-the-prometheus-expression-browser
 
-- browser: localhost:9090/graph
+- browser: http://localhost:9090/graph
 - Expression bar: node_uname_info
 - Click execute and will get something back
 
 Other expressions:
-    - rate(node_cpu_seconds_total{mode="system"}[1m])
+* rate(node_cpu_seconds_total{mode="system"}[1m])
 
