@@ -13,26 +13,14 @@ servers=[
                 :host => 9000,
                 :guest => 9000,
             },
-            {   # pagdmin
-                :host => 11111,
-                :guest => 11111,
+            {   # dockprom.prometheus
+                :host => 9090,
+                :guest => 9090,
             },
             {   # dockprom.grafana
                 :host => 3000,
                 :guest => 3000,
             },
-            {   # dockprom.alertmanager
-                :host => 9093,
-                :guest => 9093,
-            },
-            {   # dockprom.prometheus
-                :host => 9090,
-                :guest => 9090,
-            },
-            {   # dockprom.node-exporter
-                :host => 9100,
-                :guest => 9100,
-            }
         ]
     },
     {
