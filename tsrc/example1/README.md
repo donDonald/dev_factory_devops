@@ -1,5 +1,5 @@
 # Hosts and services setup
-This test runs 2 VMs:
+This example runs 2 VMs:
  - h1
      - dns server
      - dockprom
