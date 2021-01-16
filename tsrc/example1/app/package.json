@@ -1,0 +1,22 @@
+{
+    "name": "app",
+    "version": "1.0.0",
+    "description": "Simple http server with prometheus exporter for reorting app status",
+    "main": "index.js",
+    "scripts": {
+        "start": "cd /app && node index.js"
+    },
+    "keywords": [
+        "app",
+        "exporter",
+        "prometheus",
+        "example",
+        "server"
+    ],
+    "author": "Pavel Taranov",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.17.1",
+        "prom-client": "^13.0.0"
+    }
+}

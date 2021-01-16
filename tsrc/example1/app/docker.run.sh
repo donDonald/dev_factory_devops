@@ -14,5 +14,5 @@ docker rm -f $CONTAINER_NAME
 
 KEYS="-it"
 
-docker run --name $CONTAINER_NAME --hostname $CONTAINER_NAME -p 3000:3000 $KEYS $CONTAINER_NAME
+docker run --name $CONTAINER_NAME --hostname $CONTAINER_NAME -p 12001:3000 $KEYS $CONTAINER_NAME
 

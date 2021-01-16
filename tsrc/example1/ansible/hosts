@@ -15,11 +15,6 @@ h2 ansible_ssh_user='{{ user_name }}'
 
 
 
-[DB_SERVERS]
-h1 ansible_ssh_user='{{ user_name }}'
-
-
-
 [PORTAINER]
 h1 ansible_ssh_user='{{ user_name }}'
 
@@ -38,5 +33,10 @@ h1 ansible_ssh_user='{{ user_name }}'
 
 [DOCKPROM_EXPORTERS]
 h1 ansible_ssh_user='{{ user_name }}'
+h2 ansible_ssh_user='{{ user_name }}'
+
+
+
+[APP_SERVER]
 h2 ansible_ssh_user='{{ user_name }}'
 

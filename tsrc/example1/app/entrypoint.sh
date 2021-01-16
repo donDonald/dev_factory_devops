@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cd /app-server
-node server.js
+cd /app
+node index.js
 
 ip a
 /bin/bash

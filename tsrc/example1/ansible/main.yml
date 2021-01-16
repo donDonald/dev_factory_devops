@@ -41,15 +41,6 @@
 
 
 
-#   - name: Db servers setup
-#     hosts: DB_SERVERS
-#     roles:
-#       - docker_v2
-#       - docker_compose_v2
-#       - postgres
-
-
-
 ####- name: Swarm managers setup
 ####  hosts: swarm_managers
 ####  roles:
@@ -72,11 +63,4 @@
 ####  hosts: app_servers
 ####  roles:
 ####    - docker_swarm_service
-
-
-
-####- name: Setup cAdvisor
-####  hosts: cadvisor
-####  roles:
-####    - cadvisor
 
