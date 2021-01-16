@@ -11,10 +11,10 @@ swarm_managers_group_name: 'swarm_managers'
 dns:
     zone_name: test.com
     ns_name: h1
-    ns_network: 192.168.100.0/24
-    ns_adress: 192.168.100.10
+    ns_network: 192.168.200.0/24
+    ns_adress: 192.168.200.10
     ns_adress_reverse: 10
-    ns_adress_reverse2: 100.168.192
+    ns_adress_reverse2: 200.168.192
     ns_forwarders: 8.8.8.8
 
 

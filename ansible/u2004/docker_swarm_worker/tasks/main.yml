@@ -10,6 +10,7 @@
       - "manager_token:{{ manager_token }}"
       - "worker_token:{{ worker_token }}"
       - "api_version:{{ docker.api_version }}"
+#     - "WORKER: {{ hostvars[inventory_hostname] }}"
 
 
 

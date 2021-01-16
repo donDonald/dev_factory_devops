@@ -40,4 +40,5 @@
       - 'This is a Manager node:{{ swarm_info.docker_swarm_manager }}'
       - 'Manager token:{{ swarm_info.swarm_facts.JoinTokens.Manager }}'
       - 'Worker token:{{ swarm_info.swarm_facts.JoinTokens.Worker }}'
+#     - "MANAGER: {{ hostvars[inventory_hostname] }}"
 

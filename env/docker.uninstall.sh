@@ -5,7 +5,7 @@ echo "$C_LOG_PREFIX: Uninstalling docker..."
 
 WHOAMI="${SUDO_USER:-${USER}}"
 
-apt purge docker-ce* \
+apt-get purge docker-ce* \
  && gpasswd -d "$WHOAMI" docker
 
 echo "$C_LOG_PREFIX: Uninstalling docker is complete."

@@ -1,0 +1,18 @@
+---
+
+- name: Checkout repo
+  git:
+    repo: 'https://github.com/donDonald/dockprom.git'
+    force: true
+    dest: /home/{{ user_name }}/d_exporters
+    version: '{{ version }}'
+  tags: dockprom_exporters
+
+
+
+- name: Launch exportes like nodeexporter, cadvisor, whatever...
+  command: docker-compose -f ./docker-compose.exporters.yml up -d --build --force-recreate
+  args:
+    chdir: /home/{{ user_name }}/d_exporters
+  tags: dockprom_exporters
+

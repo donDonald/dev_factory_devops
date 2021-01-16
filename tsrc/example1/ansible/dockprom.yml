@@ -1,0 +1,12 @@
+
+- name: Setup dockprom - swarm monitoring tool
+  hosts: DOCKPROM
+  roles:
+    - dockprom_service
+
+
+
+- name: Setup dockprom sources
+  hosts: DOCKPROM_EXPORTERS
+  roles:
+    - dockprom_exporters
