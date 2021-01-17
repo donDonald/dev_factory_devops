@@ -1,6 +1,8 @@
 
 // https://habr.com/ru/post/492742/(Визуализируем данные Node JS приложения с помощью Prometheus + Grafana)
+// !!! https://sysdig.com/blog/prometheus-metrics/#nodejsjavascriptcodeinstrumentationwithprometheusopenmetrics
 // https://medium.com/the-monitoring-metric/simple-prometheus-exporter-for-express-js-7906b2883fde(Simple Prometheus exporter for express.js)
+// https://sysdig.com/blog/prometheus-metrics/
 // https://github.com/siimon/prom-client
 
 
@@ -21,34 +23,32 @@ const registry = new client.Registry();
 
 
 const metrics = {
-    set app(app) {
-        this._app = app;
-    },
+
+    set sink(sink) { this._sink = sink; },
+    get sink() { return this._sink; },
 
 
 
-    get app() {
-        return this._app;
-    },
+    set prefix(prefix) { this._prefix = prefix; },
+    get prefix() { return this._prefix ? this._prefix : ''; },
 
 
 
-    setup(registry) {
-        metrics.requests = new client.Gauge(
-            {
-                name: 'http_requests',
-                help: 'Amount of managed http requests',
-                registers: [registry],
-                collect() { this.set(metrics.app.metrics.reqCount) }
-            }
-        );
+    setup(sink, prefix) {
+        this.sink = sink;
+        this.prefix = prefix;
 
-        ////async function collect() {
-        ////    metrics.requests.set(
-        ////        Math.floor(gaussian(40, 400).ppf(Math.random())),
-        ////    );
-        ////}
-        ////setInterval(collect, 5000);
+        const http_requests = new client.Gauge({
+            name: this.prefix + 'http_requests',
+            help: 'Amount of managed http requests',
+            collect() { this.set(metrics.sink.reqCount) }
+        });
+        registry.registerMetric(http_requests);
+
+        async function collect() {
+            http_requests.set(metrics.sink.reqCount);
+        }
+        setInterval(collect, 5000);
     },
 
 
@@ -61,6 +61,5 @@ const metrics = {
 
 
 
-metrics.setup(registry);
 module.exports = metrics;
 

@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 
 const metrics = require('./metrics');
-metrics.app = app;
+metrics.setup(app.metrics, 'app_');
 app.get('/metrics', metrics.mw);
 
 
