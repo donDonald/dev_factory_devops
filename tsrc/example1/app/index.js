@@ -1,7 +1,5 @@
 
-const os = require('os');
 const express = require('express');
-
 const PORT = 3000
 const CAPTION = '';
 

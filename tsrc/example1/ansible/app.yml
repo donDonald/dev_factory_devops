@@ -1,0 +1,51 @@
+---
+
+Plan {
+    Install app itself {
+        Install app using simple docker
+        1. Create local docker registry, setup /etc/hosts to point regitry to localhost
+        2. Build app docker image
+        3. Push app image into regitry
+        4. Create docker-compose.yml for app
+
+        Create docker_service role {
+            takes paramss:
+                - git repo, version, tag?
+                - filename for dcoker-compose file to run
+
+            this role shall install the given docker-compose file
+        }
+    }
+
+    Install Grafana dashboard {
+        Deploy devops/tsrc/example1/app/app.grafana.dashboard.json to DOCKPROM
+    }
+
+    Update phrometeus setup {
+        Have to update phrometeus scrapes configs and point app as a spurce of scrapes
+    }
+}
+
+#   - name: App setup
+#     hosts: APP
+#     vars:
+#       ptfixme: 'ptfixme'
+#     roles:
+#       - ptfixme
+
+
+
+#   - name: Setup grafana
+#     hosts: DOCKPROM
+#     roles:
+#       - dockprom_service_grafana_dashboard
+
+
+
+#   - name: Setup prometheus scrape configuration
+#     hosts: APP
+#     vars:
+#       prometheus_target: 'h1'
+#     roles:
+#       - dockprom_service_scrape_target
+

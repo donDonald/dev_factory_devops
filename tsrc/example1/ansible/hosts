@@ -37,6 +37,6 @@ h2 ansible_ssh_user='{{ user_name }}'
 
 
 
-[APP_SERVER]
+[APP]
 h2 ansible_ssh_user='{{ user_name }}'
 

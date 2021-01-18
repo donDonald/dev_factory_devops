@@ -41,26 +41,6 @@
 
 
 
-####- name: Swarm managers setup
-####  hosts: swarm_managers
-####  roles:
-####    - python3
-####    - docker_v2
-####    - docker_swarm_manager
-
-
-
-####- name: Swarm workers setup
-####  hosts: swarm_workers
-####  roles:
-####    - python3
-####    - docker_v2
-####    - docker_swarm_worker
-
-
-
-####- name: App servers setup
-####  hosts: app_servers
-####  roles:
-####    - docker_swarm_service
+- name: Setup app
+  import_playbook: app.yml
 
