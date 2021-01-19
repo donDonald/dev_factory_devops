@@ -1,0 +1,22 @@
+version: '3.2'
+
+
+
+networks:
+    app:
+        driver: bridge
+
+
+
+services:
+
+
+
+    app:
+        image: dondonald/devops-example1:latest
+        restart: always
+        ports:
+            - "3000:3000"
+        networks:
+            - app
+
