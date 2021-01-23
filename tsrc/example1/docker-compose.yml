@@ -3,8 +3,8 @@ version: '3.2'
 
 
 networks:
-    app:
-        driver: bridge
+    xyzzz:
+        driver: overlay
 
 
 
@@ -16,7 +16,15 @@ services:
         image: dondonald/devops-example1:latest
         restart: always
         ports:
-            - "3000:3000"
+            - '3000:3000'
         networks:
-            - app
+            - xyzzz
+        deploy:
+            mode: replicated
+            replicas: 2
+            resources:
+                limits:
+                    memory: 512M
+                reservations:
+                    memory: 128M
 

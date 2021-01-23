@@ -40,3 +40,7 @@ h2 ansible_ssh_user='{{ user_name }}'
 [APP]
 h2 ansible_ssh_user='{{ user_name }}'
 
+
+
+[APP_WORKERS]
+

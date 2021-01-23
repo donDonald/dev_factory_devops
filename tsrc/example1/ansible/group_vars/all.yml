@@ -4,7 +4,7 @@ user_name: 'vagrant'
 
 
 
-swarm_managers_group_name: 'swarm_managers'
+#swarm_managers_group_name: 'swarm_managers'
 
 
 
@@ -19,11 +19,11 @@ dns:
 
 
 
-docker_swarm_service:
-    app_name: "app-server"
-    network_name: "DSM_BadAss"
-    network_published_port: 3000
-    network_target_port: 3000
-    image: "dondonald/hallo-node:v1"
-    replicas_count: 2
+#   docker_swarm_service:
+#       app_name: "app-server"
+#       network_name: "DSM_BadAss"
+#       network_published_port: 3000
+#       network_target_port: 3000
+#       image: "dondonald/hallo-node:v1"
+#       replicas_count: 2
 

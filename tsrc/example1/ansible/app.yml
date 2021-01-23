@@ -58,6 +58,9 @@
 
 #               this role shall install the given docker-compose file
 #           }
+
+#           6. Move app to swarm mode 
+
 #       }
 
 #       Install Grafana dashboard {
@@ -69,15 +72,35 @@
 #       }
 #   }
 
-- name: App setup
+- name: Setup swarm manager
   hosts: APP
   vars:
+    advertise_address: "eth1:2377"
+  roles:
+    - docker_v2
+    - docker_swarm_manager
+
+
+
+- name: Setup swarm workers
+  hosts: APP_WORKERS
+  vars:
+    manager_group: 'APP'
+    advertise_address: "eth1:2377"
+  roles:
+    - docker_swarm_worker
+
+
+
+- name: Deploy app
+  hosts: APP
+  vars:
+    name: 'app'
     git_repo: 'https://github.com/donDonald/devops.git'
     version: 'app-server'
-    dest: 'example1'
     path: 'tsrc/example1/'
   roles:
-    - docker_service
+    - docker_stack
 
 
 

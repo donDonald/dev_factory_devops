@@ -24,17 +24,17 @@
   git:
     repo: '{{ git_repo }}'
     force: true
-    dest: /home/{{ user_name }}/
+    dest: /home/{{ user_name }}/{{ name }}/
     version: '{{ version }}'
   tags: docker_stack
 
 
 
-- name: Copy dc file manually(TEMPORARY FIX, TBR)
-  copy:
-    src: docker-compose.yml
-    dest: /home/{{ user_name }}/{{ path }}
-  tags: docker_stack
+#   - name: Copy dc file manually(TEMPORARY FIX, TBR)
+#     copy:
+#       src: docker-compose.yml
+#       dest: /home/{{ user_name }}/{{ name }}/{{ path }}
+#     tags: docker_stack
 
 
 
@@ -44,6 +44,6 @@
     state: present
     name: "{{ name }}"
     compose:
-      - /home/{{ user_name }}/{{ path }}/docker-compose.yml
+      - /home/{{ user_name }}/{{ name }}/{{ path }}/docker-compose.yml
   tags: docker_stack
 

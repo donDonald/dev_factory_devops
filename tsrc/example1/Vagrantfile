@@ -30,6 +30,10 @@ servers=[
         :ram => 2048,
         :cpu => 1,
         :ports => [
+            {   # app
+                :host => 20000,
+                :guest => 3000,
+            },
         ]
     }
 ]
