@@ -104,10 +104,13 @@
 
 
 
-#   - name: Setup grafana
-#     hosts: DOCKPROM
-#     roles:
-#       - dockprom_service_grafana_dashboard
+- name: Setup grafana
+  hosts: DOCKPROM
+  vars:
+    url: 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/app/app.grafana.dashboard.json'
+    dest: 'd_service/grafana/provisioning/dashboards/app.grafana.dashboard.json'
+  roles:
+    - dockprom_service_grafana_dashboard
 
 
 

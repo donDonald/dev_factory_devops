@@ -1,0 +1,15 @@
+---
+
+- debug:
+    msg:
+      - 'url:{{ url }}'
+      - 'dest:{{ dest }}'
+
+
+
+- name: Fetch '{{ url }}'
+  get_url:
+    url: '{{ url }}'
+    dest: /home/{{ user_name }}/{{ dest }}
+  tags: dockprom_service_grafana_dashboard
+

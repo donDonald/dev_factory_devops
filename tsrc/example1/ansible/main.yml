@@ -36,8 +36,8 @@
 
 
 
-#   - name: Setup DOCKPROM - swarm monitoring tool
-#     import_playbook: dockprom.yml
+- name: Setup DOCKPROM - swarm monitoring tool
+  import_playbook: dockprom.yml
 
 
 
