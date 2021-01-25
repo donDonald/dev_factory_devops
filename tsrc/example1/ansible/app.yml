@@ -104,7 +104,7 @@
 
 
 
-- name: Setup grafana
+- name: Deploy grafana dashboard
   hosts: DOCKPROM
   vars:
     url: 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/app/app.grafana.dashboard.json'
@@ -114,10 +114,10 @@
 
 
 
-#   - name: Setup prometheus scrape configuration
-#     hosts: APP
-#     vars:
-#       prometheus_target: 'h1'
-#     roles:
-#       - dockprom_service_scrape_target
+- name: Deploy prometheus scrape configuration
+  hosts: APP
+  vars:
+    prometheus_target: 'h1'
+  roles:
+    - dockprom_service_prometheus_scrape_target
 

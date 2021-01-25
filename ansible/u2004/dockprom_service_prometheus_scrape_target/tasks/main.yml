@@ -1,0 +1,21 @@
+---
+
+- debug:
+    msg:
+      - 'prometheus_target:{{ prometheus_target }}'
+      - 'groups:{{ groups }}'
+      - 'groups.APP:{{ groups.APP }}'
+
+
+
+- name: Append prometheus scrape targets
+  delegate_to: '{{ prometheus_target }}'
+  blockinfile:
+    path: /home/vagrant/d_service/prometheus/prometheus.yml
+    marker: "# {mark} append app to prometheus"
+    block: |2
+        - job_name: 'app'
+          scrape_interval: 10s
+          static_configs:
+            - targets: ['h2:3000']
+
