@@ -1,13 +1,13 @@
 {
-    "name": "app",
+    "name": "example1",
     "version": "1.0.0",
-    "description": "Simple http server with prometheus exporter for reorting app status",
+    "description": "Simple http server with prometheus exporter for reporting application status",
     "main": "index.js",
     "scripts": {
-        "start": "cd /app && node index.js"
+        "start": "cd /example1 && node index.js"
     },
     "keywords": [
-        "app",
+        "example1",
         "exporter",
         "prometheus",
         "example",

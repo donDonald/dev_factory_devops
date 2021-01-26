@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /app
+cd /example1
 node index.js
 
 ip a

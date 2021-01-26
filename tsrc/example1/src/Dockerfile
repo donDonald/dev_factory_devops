@@ -21,17 +21,15 @@ RUN curl https://nodejs.org/download/release/latest-v14.x/node-v14.15.4-linux-x6
 
 
 
-# Fetch application
-COPY . /app
+COPY . /example1
 
 
 
-# Install node packages required by app.
-RUN cd /app \
+RUN cd /example1 \
  && npm install assert \
  && npm install
 
 
 
-ENTRYPOINT /app/entrypoint.sh
+ENTRYPOINT /example1/entrypoint.sh
 

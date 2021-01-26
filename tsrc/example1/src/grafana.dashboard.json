@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "Test app exporting its statistic over 3000/metrics like htts requests and so on",
+  "description": "example1: test application exporting its statistic over 3000/metrics like htts requests and so on",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
@@ -67,7 +67,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "app_http_requests",
+          "expr": "example1_http_requests",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -140,7 +140,7 @@
     ]
   },
   "timezone": "",
-  "title": "app",
+  "title": "example1",
   "uid": "A5pImKBMz",
   "version": 5
 }

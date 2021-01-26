@@ -12,7 +12,7 @@ services:
 
 
 
-    app:
+    example1:
         image: dondonald/devops-example1:latest
         restart: always
         ports:

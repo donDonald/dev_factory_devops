@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 
 
 const metrics = require('./metrics');
-metrics.setup(app.metrics, 'app_');
+metrics.setup(app.metrics, 'example1_');
 app.get('/metrics', metrics.mw);
 
 
