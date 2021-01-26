@@ -27,7 +27,7 @@ servers=[
         :hostname => "h2",
         :ip => "192.168.200.100",
         :box => "generic/ubuntu2004",
-        :ram => 2048,
+        :ram => 1536,
         :cpu => 1,
         :ports => [
             {   # app
