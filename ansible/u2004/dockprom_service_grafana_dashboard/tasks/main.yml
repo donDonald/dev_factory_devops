@@ -1,15 +1,118 @@
 ---
 
-- debug:
-    msg:
-      - 'url:{{ url }}'
-      - 'dest:{{ dest }}'
+# PT: grafana exoses some HTTP APIs
+# https://grafana.com/docs/grafana/latest/http_api/
+# https://grafana.com/docs/grafana/latest/http_api/dashboard/
+# to list dashboards: $ curl -X GET -H 'Content-Type: application/json' http://admin:admin@localhost:3000/api/search?dashboardIds=*
+# to add dashboard: $ curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d @dashboard.json http://admin:admin@localhost:3000/api/dashboards/db
 
-
-
-- name: Fetch '{{ url }}'
-  get_url:
-    url: '{{ url }}'
-    dest: /home/{{ user_name }}/{{ dest }}
+- name: Collect installed dashboards
+  command: curl -X GET http://admin:admin@localhost:3000/api/search?dashboardIds=*
+  register: dashboard_list
   tags: dockprom_service_grafana_dashboard
+
+
+
+- name: Print out installed dashboards
+  vars:
+    dashboards: "{{ dashboard_list.stdout | from_json }}"
+  debug:
+    msg:
+     - "typeof dashboard_list.stdout:{{ dashboard_list.stdout | type_debug }}"
+     - "dashboard_list.stdout:{{ dashboard_list.stdout }}"
+     - "dashboard_list.stderr:{{ dashboard_list.stderr}}"
+     - "dashboard_list.rc:{{ dashboard_list.rc}}"
+     - "dashboard_list.failed:{{ dashboard_list.failed }}"
+     - "dashboards:{{ dashboards }}"
+  tags: dockprom_service_grafana_dashboard
+
+
+
+#################################################################################################
+- name: Deploy grafana 1860.node-exporter-full_rev21.json dashboard
+  vars:
+    dashboard: "{{ lookup('file', '1860.node-exporter-full_rev21.json') | from_json | to_nice_json(indent=4)}}"
+  template:
+    src: dashboard.j2
+    dest: /home/{{ user_name }}/d_service/dashboard.1860.json
+  tags: dockprom_service_grafana_dashboard
+
+
+
+#   - name: Install grafana 1860.node-exporter-full_rev21.json dashboard
+#     shell:
+#         cmd: |
+#             curl -X POST -H "Content-Type: application/json" -d @dashboard.1860.json http://admin:admin@localhost:3000/api/dashboards/db
+#     args:
+#       chdir: /home/{{ user_name }}/d_service
+#     register: result
+#     tags: dockprom_service_grafana_dashboard
+
+
+
+#   - name: Print out result
+#     debug:
+#       msg:
+#        - "result:{{ result }}"
+#     tags: dockprom_service_grafana_dashboard
+
+
+
+#################################################################################################
+- name: Deploy grafana 11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json dashboard
+  vars:
+    dashboard: "{{ lookup('file', '11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json') | from_json | to_nice_json(indent=4)}}"
+  template:
+    src: dashboard.j2
+    dest: /home/{{ user_name }}/d_service/dashboard.11074.json
+  tags: dockprom_service_grafana_dashboard
+
+
+
+#   - name: Install grafana 11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json dashboard
+#     shell:
+#         cmd: |
+#             curl -X POST -H "Content-Type: application/json" -d @dashboard.11074.json http://admin:admin@localhost:3000/api/dashboards/db
+#     args:
+#       chdir: /home/{{ user_name }}/d_service
+#     register: result
+#     tags: dockprom_service_grafana_dashboard
+
+
+
+#   - name: Print out result
+#     debug:
+#       msg:
+#        - "result:{{ result }}"
+#     tags: dockprom_service_grafana_dashboard
+
+
+
+#################################################################################################
+- name: Deploy grafana 10180.kds-linux-hosts_rev1.json dashboard
+  vars:
+    dashboard: "{{ lookup('file', '10180.kds-linux-hosts_rev1.json') | from_json | to_nice_json(indent=4)}}"
+  template:
+    src: dashboard.j2
+    dest: /home/{{ user_name }}/d_service/dashboard.10180.json
+  tags: dockprom_service_grafana_dashboard
+
+
+
+#   - name: Install grafana 10180.kds-linux-hosts_rev1.json dashboard
+#     shell:
+#         cmd: |
+#             curl -X POST -H "Content-Type: application/json" -d @dashboard.10180.json http://admin:admin@localhost:3000/api/dashboards/db
+#     args:
+#       chdir: /home/{{ user_name }}/d_service
+#     register: result
+#     tags: dockprom_service_grafana_dashboard
+
+
+
+#   - name: Print out result
+#     debug:
+#       msg:
+#        - "result:{{ result }}"
+#     tags: dockprom_service_grafana_dashboard
 

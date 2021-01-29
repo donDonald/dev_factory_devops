@@ -73,53 +73,91 @@
 #   }
 
 - name: Setup swarm manager
-  hosts: APP
+  hosts: EXAMPLE1
   vars:
     advertise_address: "eth1:2377"
   roles:
     - docker_v2
     - docker_swarm_manager
+  tags: example1
 
 
 
 - name: Setup swarm workers
-  hosts: APP_WORKERS
+  hosts: EXAMPLE1_WORKERS
   vars:
-    manager_group: 'APP'
+    manager_group: 'EXAMPLE1'
     advertise_address: "eth1:2377"
   roles:
+    - docker_v2
     - docker_swarm_worker
+  tags: example1
 
 
 
-- name: Deploy app
-  hosts: APP
+- name: Deploy example1
+  hosts: EXAMPLE1
   vars:
-    name: 'app'
-    git_repo: 'https://github.com/donDonald/devops.git'
-    version: 'app-server'
-    path: 'tsrc/example1/'
+    app_name: 'example1'
+    network_name: "DSM_BadAss"
+    network_published_port: 3000
+    network_target_port: 3000
+    image: "dondonald/devops-example1:latest"
+    replicas_count: 5
   roles:
-    - docker_stack
+    - docker_swarm_service
+  tags: example1
 
 
 
-- name: Deploy grafana dashboard
-  hosts: DOCKPROM
-  vars:
-    url: 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/grafana.dashboard.json'
-    dest: 'd_service/grafana/provisioning/dashboards/example1.grafana.dashboard.json'
-  roles:
-    - dockprom_service_grafana_dashboard
 
 
 
-- name: Deploy prometheus scrape configuration
-  hosts: APP
-  vars:
-    prometheus_target: 'h1'
-    port: 3000
-    job_name: app
-  roles:
-    - dockprom_service_prometheus_scrape_target
+
+
+
+
+
+
+
+
+
+
+
+####- name: Deploy example1
+####  hosts: EXAMPLE1
+####  vars:
+####    name: 'example1'
+####    git_repo: 'https://github.com/donDonald/devops.git'
+####    version: 'app-server'
+####    path: 'tsrc/example1/'
+####  roles:
+####    - docker_stack
+####  tags: example1
+
+
+
+####- name: Deploy grafana dashboard
+####  hosts: DOCKPROM
+####  vars:
+####    url: 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/grafana.dashboard.json'
+####    dest: 'd_service/grafana/provisioning/dashboards/example1.grafana.dashboard.json'
+####  roles:
+####    - dockprom_service_grafana_dashboard
+####  tags: example1
+
+
+##### PT, using union ansible filter to join EXAMPLE1 and EXAMPLE1_WORKERS
+##### https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters
+##### https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html#discovering-the-data-type
+##### https://docs.ansible.com/ansible/2.3/playbooks_filters.html
+####- name: Deploy prometheus scrape configuration
+####  hosts: DOCKPROM
+####  vars:
+####    job_name: 'example1'
+####    port: 3000
+####    targets: "{{ groups.EXAMPLE1 | union(groups.EXAMPLE1_WORKERS) }}"
+####  roles:
+####    - dockprom_service_prometheus_scrape_target
+####  tags: example1
 

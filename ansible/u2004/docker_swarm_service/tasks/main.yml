@@ -1,0 +1,29 @@
+---
+
+- name: Print out swarm info
+  debug:
+    msg:
+     - "network_name:{{ network_name }}"
+     - "network_published_port:{{ network_published_port }}"
+     - "network_target_port:{{ network_target_port }}"
+     - "app_name:{{ app_name }}"
+     - "image:{{ image }}"
+     - "replicas_count:{{ replicas_count }}"
+  tags: docker_swarm_service
+
+
+
+- name: Setup app
+  docker_swarm_service:
+    name: "{{ app_name }}"
+    image: "{{ image }}"
+    replicas: "{{ replicas_count }}"
+    networks:
+      - "{{ network_name }}"
+    publish:
+      - published_port: "{{ network_published_port }}"
+        target_port: "{{ network_target_port }}"
+        protocol: tcp
+        mode: ingress
+  tags: docker_swarm_service
+

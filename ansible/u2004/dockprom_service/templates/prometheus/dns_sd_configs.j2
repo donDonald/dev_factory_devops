@@ -1,0 +1,14 @@
+# https://github.com/donDonald/devops
+# Pavel Taranov
+# pavel.a.taranov@gmail.com
+
+  - job_name: '{{ job_name }}'
+    scrape_interval: 10s
+    dns_sd_configs:
+      - names:
+{% for exporter in exporters %}
+        - '{{ exporter }}'
+{% endfor %}
+        type: 'A'
+        port: {{ port }}
+

@@ -41,6 +41,6 @@
 
 
 
-- name: Setup app
-  import_playbook: app.yml
+####- name: Setup example1
+####  import_playbook: example1.yml
 

@@ -1,5 +1,5 @@
 # Hosts and services setup
-This example runs 2 VMs:
+This example runs 3 VMs:
  - h1
      - dns server
      - dockprom
@@ -11,9 +11,16 @@ This example runs 2 VMs:
      - dockprom
          - [nodeexporter](http://h2:9100), port 9100
          - [cadvisor](http://h2:8080), port 8080
-     - app-server 
-         - [server](http://h2:12001), port 12001 (simple server powered by node.js)
-         - [exporter](http://h2:12002), port 12002 (prometheus exporter for server powered by node.js)
+     - example1
+         - [server](http://h2:3000), simple server powered by node.js
+         - [server](http://h2:3000/metrics), application metrics
+ - h3
+     - dockprom
+         - [nodeexporter](http://h3:9100), port 9100
+         - [cadvisor](http://h3:8080), port 8080
+     - example1
+         - [server](http://h3:3000), simple server powered by node.js
+         - [server](http://h3:3000/metrics), application metrics
 
 The whole setup is pretty much close to real production environment.\
 For VM management I use Vagrant.\
@@ -74,6 +81,7 @@ If password is requested - press ENTER
 ```
 $ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@h1
 $ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@h2
+$ ssh-copy-id -i ansible.ssh.stuff.pub vagrant@h3
 ```
 Use "vagrant" as password
 
@@ -83,6 +91,7 @@ Use "vagrant" as password
 ```
 $ H1
 $ H2
+$ H3
 ```
 
 
