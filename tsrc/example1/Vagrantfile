@@ -6,7 +6,7 @@ servers=[
         :hostname => "h1",
         :ip => "192.168.200.10",
         :box => "generic/ubuntu2004",
-        :ram => 2560,
+        :ram => 2304,
         :cpu => 1,
         :ports => [
             {   # portainer

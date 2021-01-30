@@ -25,6 +25,13 @@
 
 
 
+- name: Create overlay network
+  docker_network:
+    name: '{{ swarm_network_name }}'
+    driver: overlay
+
+
+
 - name: Get info on Docker Swarm
   docker_swarm_info:
     api_version: '{{ docker.api_version }}'

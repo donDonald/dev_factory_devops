@@ -75,7 +75,8 @@
 - name: Setup swarm manager
   hosts: EXAMPLE1
   vars:
-    advertise_address: "eth1:2377"
+    advertise_address: 'eth1:2377'
+    swarm_network_name: 'example1_main'
   roles:
     - docker_v2
     - docker_swarm_manager
@@ -99,13 +100,29 @@
   hosts: EXAMPLE1
   vars:
     app_name: 'example1'
-    network_name: "DSM_BadAss"
+    network_name: 'example1_main'
     network_published_port: 3000
     network_target_port: 3000
-    image: "dondonald/devops-example1:latest"
+    image: 'dondonald/devops-example1:latest'
     replicas_count: 5
   roles:
     - docker_swarm_service
+  tags: example1
+
+
+
+# PT, using union ansible filter to join EXAMPLE1 and EXAMPLE1_WORKERS
+# https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html#discovering-the-data-type
+# https://docs.ansible.com/ansible/2.3/playbooks_filters.html
+- name: Deploy prometheus scrape configuration
+  hosts: DOCKPROM
+  vars:
+    job_name: 'example1'
+    port: 3000
+    targets: "{{ groups.EXAMPLE1 | union(groups.EXAMPLE1_WORKERS) }}"
+  roles:
+    - dockprom_service_prometheus_scrape_target
   tags: example1
 
 
@@ -124,19 +141,6 @@
 
 
 
-####- name: Deploy example1
-####  hosts: EXAMPLE1
-####  vars:
-####    name: 'example1'
-####    git_repo: 'https://github.com/donDonald/devops.git'
-####    version: 'app-server'
-####    path: 'tsrc/example1/'
-####  roles:
-####    - docker_stack
-####  tags: example1
-
-
-
 ####- name: Deploy grafana dashboard
 ####  hosts: DOCKPROM
 ####  vars:
@@ -146,18 +150,4 @@
 ####    - dockprom_service_grafana_dashboard
 ####  tags: example1
 
-
-##### PT, using union ansible filter to join EXAMPLE1 and EXAMPLE1_WORKERS
-##### https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters
-##### https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html#discovering-the-data-type
-##### https://docs.ansible.com/ansible/2.3/playbooks_filters.html
-####- name: Deploy prometheus scrape configuration
-####  hosts: DOCKPROM
-####  vars:
-####    job_name: 'example1'
-####    port: 3000
-####    targets: "{{ groups.EXAMPLE1 | union(groups.EXAMPLE1_WORKERS) }}"
-####  roles:
-####    - dockprom_service_prometheus_scrape_target
-####  tags: example1
 
