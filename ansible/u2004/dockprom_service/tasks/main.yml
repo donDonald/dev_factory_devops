@@ -92,3 +92,9 @@
     chdir: /home/{{ user_name }}/d_service
   tags: dockprom_service
 
+
+
+- name: Install dashboards
+  include: dashboards.yml
+  tags: dockprom_service
+

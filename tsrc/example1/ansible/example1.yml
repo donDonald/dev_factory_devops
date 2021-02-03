@@ -127,27 +127,12 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-####- name: Deploy grafana dashboard
-####  hosts: DOCKPROM
-####  vars:
-####    url: 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/grafana.dashboard.json'
-####    dest: 'd_service/grafana/provisioning/dashboards/example1.grafana.dashboard.json'
-####  roles:
-####    - dockprom_service_grafana_dashboard
-####  tags: example1
-
+#   - name: Deploy grafana dashboard
+#     hosts: DOCKPROM
+#     vars:
+#       url: 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/grafana.dashboard.json'
+#       dest: 'd_service/grafana/provisioning/dashboards/example1.grafana.dashboard.json'
+#     roles:
+#       - dockprom_service_grafana_dashboard
+#     tags: example1
 

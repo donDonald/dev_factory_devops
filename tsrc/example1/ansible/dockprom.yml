@@ -13,10 +13,3 @@
   hosts: DOCKPROM_EXPORTERS
   roles:
     - dockprom_exporters
-
-
-
-- name: Setup dashboard
-  hosts: DOCKPROM
-  roles:
-    - dockprom_service_grafana_dashboard

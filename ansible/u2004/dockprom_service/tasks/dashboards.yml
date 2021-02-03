@@ -6,25 +6,25 @@
 # to list dashboards: $ curl -X GET -H 'Content-Type: application/json' http://admin:admin@localhost:3000/api/search?dashboardIds=*
 # to add dashboard: $ curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d @dashboard.json http://admin:admin@localhost:3000/api/dashboards/db
 
-- name: Collect installed dashboards
-  command: curl -X GET http://admin:admin@localhost:3000/api/search?dashboardIds=*
-  register: dashboard_list
-  tags: dockprom_service_grafana_dashboard
+#   - name: Collect installed dashboards
+#     command: curl -X GET http://admin:admin@localhost:3000/api/search?dashboardIds=*
+#     register: dashboard_list
+#     tags: dockprom_service_dashboards
 
 
 
-- name: Print out installed dashboards
-  vars:
-    dashboards: "{{ dashboard_list.stdout | from_json }}"
-  debug:
-    msg:
-     - "typeof dashboard_list.stdout:{{ dashboard_list.stdout | type_debug }}"
-     - "dashboard_list.stdout:{{ dashboard_list.stdout }}"
-     - "dashboard_list.stderr:{{ dashboard_list.stderr}}"
-     - "dashboard_list.rc:{{ dashboard_list.rc}}"
-     - "dashboard_list.failed:{{ dashboard_list.failed }}"
-     - "dashboards:{{ dashboards }}"
-  tags: dockprom_service_grafana_dashboard
+#   - name: Print out installed dashboards
+#     vars:
+#       dashboards: "{{ dashboard_list.stdout | from_json }}"
+#     debug:
+#       msg:
+#        - "typeof dashboard_list.stdout:{{ dashboard_list.stdout | type_debug }}"
+#        - "dashboard_list.stdout:{{ dashboard_list.stdout }}"
+#        - "dashboard_list.stderr:{{ dashboard_list.stderr}}"
+#        - "dashboard_list.rc:{{ dashboard_list.rc}}"
+#        - "dashboard_list.failed:{{ dashboard_list.failed }}"
+#        - "dashboards:{{ dashboards }}"
+#     tags: dockprom_service_dashboards
 
 
 
@@ -35,7 +35,7 @@
   template:
     src: dashboard.j2
     dest: /home/{{ user_name }}/d_service/dashboard.1860.json
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -46,7 +46,7 @@
   args:
     chdir: /home/{{ user_name }}/d_service
   register: result
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -54,7 +54,7 @@
   debug:
     msg:
      - "result:{{ result }}"
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -65,7 +65,7 @@
   template:
     src: dashboard.j2
     dest: /home/{{ user_name }}/d_service/dashboard.11074.json
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -76,7 +76,7 @@
   args:
     chdir: /home/{{ user_name }}/d_service
   register: result
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -84,7 +84,7 @@
   debug:
     msg:
      - "result:{{ result }}"
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -95,7 +95,7 @@
   template:
     src: dashboard.j2
     dest: /home/{{ user_name }}/d_service/dashboard.10180.json
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -106,7 +106,7 @@
   args:
     chdir: /home/{{ user_name }}/d_service
   register: result
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 
@@ -114,7 +114,7 @@
   debug:
     msg:
      - "result:{{ result }}"
-  tags: dockprom_service_grafana_dashboard
+  tags: dockprom_service_dashboards
 
 
 #   PT: Once installing dashboards with HTTP API Grafana reports an error like: Templating [job] Error updating options: Datasource named ${DS_PROMETHEUS} was not found 
