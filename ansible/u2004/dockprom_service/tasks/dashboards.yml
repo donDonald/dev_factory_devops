@@ -41,6 +41,7 @@
 
 - name: Install grafana 1860.node-exporter-full_rev22.json dashboard
   shell:
+      warn: false
       cmd: |
           curl -X POST -H "Content-Type: application/json" -d @dashboard.1860.json http://admin:admin@localhost:3000/api/dashboards/db
   args:
@@ -71,6 +72,7 @@
 
 - name: Install grafana 11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json dashboard
   shell:
+      warn: false
       cmd: |
           curl -X POST -H "Content-Type: application/json" -d @dashboard.11074.json http://admin:admin@localhost:3000/api/dashboards/db
   args:
@@ -101,6 +103,7 @@
 
 - name: Install grafana 10180.kds-linux-hosts_rev1.json dashboard
   shell:
+      warn: false
       cmd: |
           curl -X POST -H "Content-Type: application/json" -d @dashboard.10180.json http://admin:admin@localhost:3000/api/dashboards/db
   args:
