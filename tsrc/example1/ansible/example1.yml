@@ -122,7 +122,7 @@
 
 
 
-# PT, using union ansible filter to join EXAMPLE1 and EXAMPLE1_WORKERS
+# Using union ansible filter to join EXAMPLE1 and EXAMPLE1_WORKERS
 # https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters
 # https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html#discovering-the-data-type
 # https://docs.ansible.com/ansible/2.3/playbooks_filters.html
@@ -136,25 +136,3 @@
     - dockprom_service_prometheus_scrape_target
   tags: example1
 
-
-
-##  - name: Restart dockprom
-##    hosts: DOCKPROM
-##    tasks:
-##      - name: Restart services
-##  #     community.docker.docker_compose:
-##        docker_compose:
-##          project_src: /home/{{ user_name }}/d_service
-##          files: ['docker-compose.prometheus.host-net.yml']
-##          build: no
-##          restarted: yes
-##        register: output
-
-##      - ansible.builtin.debug:
-##          var: output
-
-##   #  - ansible.builtin.assert:
-##   #      that:
-##   #        - "web.flask_web_1.state.running"
-##   #        - "db.flask_db_1.state.running"
-##    tags: example1
