@@ -17,6 +17,7 @@
     "license": "MIT",
     "dependencies": {
         "express": "^4.17.1",
-        "prom-client": "^13.0.0"
+        "prom-client": "^13.0.0",
+        "recursive-readdir-async": "^1.1.8"
     }
 }
