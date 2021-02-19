@@ -12,7 +12,11 @@ module.exports = function (options) {
     try {
         //hostName = fs.readFileSync('/etc/host_hostname');
         const liner = new lineByLine('/etc/host_hostname');
-        hostName = liner.next();
+        const line = liner.next();
+        if (line) {
+            hostName = line;
+        }
+        liner.close();
     } catch (err) {
         console.log(`err:${err}`);
     }

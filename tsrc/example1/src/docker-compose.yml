@@ -10,13 +10,12 @@ services:
             - "3000:3000"
         volumes:
             - /var/example1:/var/example1:rw
-            - /etc/hostname:/etc/host_hostname:rw
+            - /etc/hostname:/etc/host_hostname:ro
 
     exporter:
         image: dregistry:5000/exporter:latest
         ports:
             - "3001:3001"
         volumes:
-            - /var/example1:/var/example1:rw
-            - /etc/hostname:/etc/host_hostname:rw
+            - /var/example1:/var/example1:ro
 

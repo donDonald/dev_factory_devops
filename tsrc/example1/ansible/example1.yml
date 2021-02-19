@@ -98,27 +98,62 @@
 
 - name: Deploy example1
   hosts: EXAMPLE1
-  vars:
-    app_name: 'example1'
-    network_name: 'example1_main'
-    network_published_port: 3000
-    network_target_port: 3000
-    image: 'dondonald/devops-example1:latest'
-    replicas_count: 5
-  roles:
-    - docker_swarm_service
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  tasks:
+  - name: Create /var/example1 direcory for exporting data
+    file:
+      path: /var/example1
+      state: directory
+  - name: Setup server
+    docker_swarm_service:
+      name: 'example1'
+      image: 'dondonald/devops-tsrc-example1-server:latest'
+      replicas: 5
+      networks:
+        -  'example1_main'
+      publish:
+        - published_port: 3000
+          target_port: 3000
+          protocol: tcp
+          mode: ingress
+      mounts:
+        - source: /var/example1/
+          target: /var/example1/
+          type: bind
+        - source: /etc/hostname
+          target: /etc/host_hostname
+          type: bind
+  - name: Setup exporter
+    docker_swarm_service:
+      name: 'example1-exporter'
+      image: 'dondonald/devops-tsrc-example1-exporter:latest'
+      mode: 'global'
+      networks:
+        -  'example1_main'
+      publish:
+        - published_port: 3001
+          target_port: 3001
+          protocol: tcp
+          mode: ingress
+      mounts:
+        - source: /var/example1/
+          target: /var/example1/
+          type: bind
   tags: example1
 
 
 
-- name: Deploy grafana dashboard
-  hosts: DOCKPROM
-  vars:
-    dashboard: "{{ lookup('url', 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/grafana.dashboard.json', split_lines=False) | from_json | to_nice_json(indent=4) }}"
-    dst_name: 'example1.grafana.dashboard.json'
-  roles:
-    - dockprom_service_grafana_dashboard
-  tags: example1
+#   - name: Deploy grafana dashboard
+#     hosts: DOCKPROM
+#     vars:
+#       dashboard: "{{ lookup('url', 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/grafana.dashboard.json', split_lines=False) | from_json | to_nice_json(indent=4) }}"
+#       dst_name: 'example1.grafana.dashboard.json'
+#     roles:
+#       - dockprom_service_grafana_dashboard
+#     tags: example1
 
 
 
@@ -130,7 +165,7 @@
   hosts: DOCKPROM
   vars:
     job_name: 'example1'
-    port: 3000
+    port: 3001
     targets: "{{ groups.EXAMPLE1 | union(groups.EXAMPLE1_WORKERS) }}"
   roles:
     - dockprom_service_prometheus_scrape_target

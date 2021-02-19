@@ -8,7 +8,7 @@ const app = express();
 
 app.use(metrics({prefix:'example1'}));
 
-app.get('/', (req, res) => {
+app.get('/', (req, res)=>{
     res.end(CAPTION + 'Hallo Node.js Server\n')
 });
 
