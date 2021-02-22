@@ -146,14 +146,14 @@
 
 
 
-#   - name: Deploy grafana dashboard
-#     hosts: DOCKPROM
-#     vars:
-#       dashboard: "{{ lookup('url', 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/grafana.dashboard.json', split_lines=False) | from_json | to_nice_json(indent=4) }}"
-#       dst_name: 'example1.grafana.dashboard.json'
-#     roles:
-#       - dockprom_service_grafana_dashboard
-#     tags: example1
+- name: Deploy grafana dashboard
+  hosts: DOCKPROM
+  vars:
+    dashboard: "{{ lookup('url', 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/exporter/grafana.dashboard.v2.json', split_lines=False) | from_json | to_nice_json(indent=4) }}"
+    dst_name: 'example1.grafana.dashboard.json'
+  roles:
+    - dockprom_service_grafana_dashboard
+  tags: example1
 
 
 
