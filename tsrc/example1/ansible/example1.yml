@@ -111,7 +111,33 @@
     docker_swarm_service:
       name: 'example1'
       image: 'dondonald/devops-tsrc-example1-server:latest'
-      replicas: 5
+# Problem:
+#     Once vgarant is restarted all workers are assigned new names and terefore reporting to prometheus replicas*restarts_count times
+#     i.e. restartin vagrant will look like adding workers since hostname is changed and equal to docker container id
+#       vagrant@h2:~$ curl localhost:3001/metrics
+#         # HELP example1_http_requests Amount of managed http requests
+#         # TYPE example1_http_requests gauge
+#         example1_http_requests{host="h2",worker="0a3b72d3276c"} 0
+#         example1_http_requests{host="h2",worker="33aa30a0c5cd"} 0
+#         example1_http_requests{host="h2",worker="41a64d99480d"} 2
+#         example1_http_requests{host="h2",worker="5240eabc4b51"} 1
+#         example1_http_requests{host="h2",worker="5484d07b1b90"} 1
+#         example1_http_requests{host="h2",worker="5fcccbd06ad9"} 0
+#         example1_http_requests{host="h2",worker="679fe9166170"} 1
+#         example1_http_requests{host="h2",worker="9e56dad1df16"} 0
+#         example1_http_requests{host="h2",worker="b06dfae2e93c"} 0
+#         example1_http_requests{host="h2",worker="cb97b98c34f1"} 2
+#         example1_http_requests{host="h2",worker="cd161f9ad107"} 2
+#         example1_http_requests{host="h2",worker="cd827869b505"} 2
+#         example1_http_requests{host="h2",worker="d723d022bd2d"} 2
+#         example1_http_requests{host="h2",worker="eb29bd8d69a8"} 0
+#         example1_http_requests{host="h2",worker="f30172a5a48b"} 0
+#   Have to keep workers names somehow unchanged
+# Solution:
+#     https://docs.docker.com/engine/reference/commandline/service_create/#create-services-using-templates
+#     To make ansible skip templatng hostame using {% raw %} ... {% endraw %}
+      hostname: "{% raw %}worker-{{.Task.Slot}}}{% endraw %}"
+      replicas: 4
       networks:
         -  'example1_main'
       publish:
@@ -130,6 +156,7 @@
     docker_swarm_service:
       name: 'example1-exporter'
       image: 'dondonald/devops-tsrc-example1-exporter:latest'
+      hostname: "{% raw %}worker-{{.Task.Slot}}}{% endraw %}"
       mode: 'global'
       networks:
         -  'example1_main'

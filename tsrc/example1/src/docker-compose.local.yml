@@ -5,7 +5,7 @@ version: '3.2'
 services:
 
     server:
-        image: dondonald/devops-tsrc-example1-server:latest
+        image: dregistry:5000/server:latest
         ports:
             - "3000:3000"
         volumes:
@@ -13,7 +13,7 @@ services:
             - /etc/hostname:/etc/host_hostname:ro
 
     exporter:
-        image: dondonald/devops-tsrc-example1-exporter:latest
+        image: dregistry:5000/exporter:latest
         ports:
             - "3001:3001"
         volumes:

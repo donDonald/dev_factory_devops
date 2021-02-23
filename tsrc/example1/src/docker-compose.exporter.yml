@@ -1,0 +1,13 @@
+version: '3.2'
+
+
+
+services:
+
+    exporter:
+        image: dondonald/devops-tsrc-example1-exporter:latest
+        ports:
+            - "3001:3001"
+        volumes:
+            - /var/example1:/var/example1:ro
+
