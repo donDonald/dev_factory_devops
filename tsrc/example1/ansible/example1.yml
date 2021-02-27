@@ -1,77 +1,5 @@
 ---
 
-#   Plan {
-#       Install app itself {
-#           Install app using simple docker
-#           1. Create local docker registry, setup /etc/hosts to point regitry to localhost
-#               $ mkdir -p ~/tmp && cd ~/tmp
-#               $ git clone git@github.com:donDonald/dev-factory-dregistry.git dregistry
-#               $ cd dregistry
-#               $ docker-compose up -d --build
-#               $ docker-compose ps
-#                         Name                        Command               State            Ports         
-#               -------------------------------------------------------------------------------------------
-#               dregistry_dregistry-ui_1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:11132->80/tcp  
-#               dregistry_dregistry_1      /entrypoint.sh /etc/docker ...   Up      0.0.0.0:11131->5000/tcp
-
-#               $ ping dregistry
-#               PING dregistry (172.18.0.3) 56(84) bytes of data.
-#               64 bytes from dregistry (172.18.0.3): icmp_seq=1 ttl=64 time=0.080 ms
-#               64 bytes from dregistry (172.18.0.3): icmp_seq=2 ttl=64 time=0.075 ms
-
-#               ping dregistry-ui
-#               PING dregistry-ui (172.18.0.2) 56(84) bytes of data.
-#               64 bytes from dregistry-ui (172.18.0.2): icmp_seq=1 ttl=64 time=0.138 ms
-#               64 bytes from dregistry-ui (172.18.0.2): icmp_seq=2 ttl=64 time=0.061 ms
-
-
-#           1.1 Check registry works
-#               $ curl http://dregistry:5000/v2/_catalog
-#               {"repositories":[]}
-
-#           1.2 Check registry-ui works
-#               Navigate to http://localhost:11132/
-
-
-#           2. Build app docker image
-#               $ cd ~/src/donDonald/devops/tsrc/example1/app
-#               $ ./docker.build.sh app
-#               Successfully built a815d5dc5219
-#               Successfully tagged app:latest
-#               ptaranov@ptswt3:~/src/donDonald/
-
-#           3. Push app image into regitry
-#               $ docker tag app dregistry:5000/app:latest
-#               $ docker push dregistry:5000/app:latest
-#               $ curl http://dregistry:5000/v2/_catalog
-#               {"repositories":["app"]}
-#               $ curl http://dregistry:5000/v2/app/tags/list
-#               {"name":"app","tags":["latest"]}
-
-
-#           4. Create docker-compose.yml for app
-
-#           5. Create docker_service role {
-#               takes paramss:
-#                   - git repo, version, tag?
-#                   - filename for dcoker-compose file to run
-
-#               this role shall install the given docker-compose file
-#           }
-
-#           6. Move app to swarm mode 
-
-#       }
-
-#       Install Grafana dashboard {
-#           Deploy devops/tsrc/example1/app/app.grafana.dashboard.json to DOCKPROM
-#       }
-
-#       Update phrometeus setup {
-#           Have to update phrometeus scrapes configs and point app as a spurce of scrapes
-#       }
-#   }
-
 - name: Setup swarm manager
   hosts: EXAMPLE1
   vars:
@@ -103,10 +31,6 @@
   become_user: root
   remote_user: '{{ user_name }}'
   tasks:
-  - name: Create /var/example1 direcory for exporting data
-    file:
-      path: /var/example1
-      state: directory
   - name: Setup server
     docker_swarm_service:
       name: 'example1'
@@ -114,29 +38,11 @@
 # Problem:
 #     Once vgarant is restarted all workers are assigned new names and terefore reporting to prometheus replicas*restarts_count times
 #     i.e. restartin vagrant will look like adding workers since hostname is changed and equal to docker container id
-#       vagrant@h2:~$ curl localhost:3001/metrics
-#         # HELP example1_http_requests Amount of managed http requests
-#         # TYPE example1_http_requests gauge
-#         example1_http_requests{host="h2",worker="0a3b72d3276c"} 0
-#         example1_http_requests{host="h2",worker="33aa30a0c5cd"} 0
-#         example1_http_requests{host="h2",worker="41a64d99480d"} 2
-#         example1_http_requests{host="h2",worker="5240eabc4b51"} 1
-#         example1_http_requests{host="h2",worker="5484d07b1b90"} 1
-#         example1_http_requests{host="h2",worker="5fcccbd06ad9"} 0
-#         example1_http_requests{host="h2",worker="679fe9166170"} 1
-#         example1_http_requests{host="h2",worker="9e56dad1df16"} 0
-#         example1_http_requests{host="h2",worker="b06dfae2e93c"} 0
-#         example1_http_requests{host="h2",worker="cb97b98c34f1"} 2
-#         example1_http_requests{host="h2",worker="cd161f9ad107"} 2
-#         example1_http_requests{host="h2",worker="cd827869b505"} 2
-#         example1_http_requests{host="h2",worker="d723d022bd2d"} 2
-#         example1_http_requests{host="h2",worker="eb29bd8d69a8"} 0
-#         example1_http_requests{host="h2",worker="f30172a5a48b"} 0
 #   Have to keep workers names somehow unchanged
 # Solution:
 #     https://docs.docker.com/engine/reference/commandline/service_create/#create-services-using-templates
 #     To make ansible skip templatng hostame using {% raw %} ... {% endraw %}
-      hostname: "{% raw %}worker-{{.Task.Slot}}}{% endraw %}"
+      hostname: "{% raw %}worker-{{.Task.Slot}}{% endraw %}"
       replicas: 4
       networks:
         -  'example1_main'
@@ -152,23 +58,33 @@
         - source: /etc/hostname
           target: /etc/host_hostname
           type: bind
-  - name: Setup exporter
-    docker_swarm_service:
-      name: 'example1-exporter'
-      image: 'dondonald/devops-tsrc-example1-exporter:latest'
-      hostname: "{% raw %}worker-{{.Task.Slot}}}{% endraw %}"
-      mode: 'global'
-      networks:
-        -  'example1_main'
-      publish:
-        - published_port: 3001
-          target_port: 3001
-          protocol: tcp
-          mode: ingress
-      mounts:
-        - source: /var/example1/
-          target: /var/example1/
-          type: bind
+  tags: example1
+
+
+
+- name: Deploy example1 prometeheus exporter
+  hosts: EXAMPLE1_WORKERS
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  tasks:
+
+  - name: Create /var/example1 direcory for exporting data
+    file:
+      path: /var/example1
+      state: directory
+
+  - name: Fetch docker-compose file
+    get_url:
+      url: "https://raw.githubusercontent.com/donDonald/devops/{{app_git_branch}}/tsrc/example1/src/docker-compose.exporter.yml"
+      dest: /home/{{ user_name }}/docker-compose.exporter.yml
+
+  - name: Launch docker-compose file
+    command: docker-compose -f ./docker-compose.exporter.yml up -d --build
+    args:
+      chdir: /home/{{ user_name }}
+
   tags: example1
 
 
@@ -176,7 +92,7 @@
 - name: Deploy grafana dashboard
   hosts: DOCKPROM
   vars:
-    dashboard: "{{ lookup('url', 'https://raw.githubusercontent.com/donDonald/devops/app-server/tsrc/example1/src/exporter/grafana.dashboard.v2.json', split_lines=False) | from_json | to_nice_json(indent=4) }}"
+    dashboard: "{{ lookup('url', 'https://raw.githubusercontent.com/donDonald/devops/{{app_git_branch}}/tsrc/example1/src/exporter/grafana.dashboard.v2.json', split_lines=False) | from_json | to_nice_json(indent=4) }}"
     dst_name: 'example1.grafana.dashboard.json'
   roles:
     - dockprom_service_grafana_dashboard

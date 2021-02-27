@@ -1,10 +1,7 @@
 ---
 
 user_name: 'vagrant'
-
-
-
-#swarm_managers_group_name: 'swarm_managers'
+app_git_branch: 'app-server'
 
 
 
@@ -16,14 +13,4 @@ dns:
     ns_adress_reverse: 10
     ns_adress_reverse2: 200.168.192
     ns_forwarders: 8.8.8.8
-
-
-
-#   docker_swarm_service:
-#       app_name: "app-server"
-#       network_name: "DSM_BadAss"
-#       network_published_port: 3000
-#       network_target_port: 3000
-#       image: "dondonald/hallo-node:v1"
-#       replicas_count: 2
 

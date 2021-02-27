@@ -8,9 +8,9 @@ const os = require("os");
 module.exports = function (options) {
     assert(options.prefix)
 
+    // Collect files hierarchy for writing metrics
     let hostName = 'somehost';
     try {
-        //hostName = fs.readFileSync('/etc/host_hostname');
         const liner = new lineByLine('/etc/host_hostname');
         const line = liner.next();
         if (line) {
@@ -24,16 +24,21 @@ module.exports = function (options) {
     const dirName = `/var/${options.prefix}/http_requests/${hostName}`;
     const fileName = `/var/${options.prefix}/http_requests/${hostName}/${workerName}`;
 
-    let http_requests = 0;
-    let timer;
-
     console.log(`hostName:${hostName}`);
     console.log(`workerName:${workerName}`);
     console.log(`dirName:${dirName}`);
     console.log(`fileName:${fileName}`);
-
     fs.mkdirSync(dirName, { recursive: true });
 
+    // Try to read initial values if any
+    let http_requests;
+    try {
+        http_requests = fs.readFileSync(fileName);
+    } catch (err) {
+        http_requests = 0;
+    }
+
+    let timer;
     const start = function() {
         if (!timer) {
             timer = setTimeout(write, 1000);

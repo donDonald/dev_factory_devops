@@ -6,6 +6,7 @@ services:
 
     exporter:
         image: dondonald/devops-tsrc-example1-exporter:latest
+        restart: unless-stopped
         ports:
             - "3001:3001"
         volumes:
