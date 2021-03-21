@@ -1,0 +1,116 @@
+---
+
+- name: Setup swarm manager
+  hosts: EXAMPLE1
+  vars:
+    advertise_address: 'eth1:2377'
+    swarm_network_name: 'example1_main'
+  roles:
+    - docker_v2
+    - docker_swarm_manager
+  tags: example1
+
+
+
+- name: Setup swarm workers
+  hosts: EXAMPLE1_WORKERS
+  vars:
+    manager_group: 'EXAMPLE1'
+    advertise_address: "eth1:2377"
+  roles:
+    - docker_v2
+    - docker_swarm_worker
+  tags: example1
+
+
+
+- name: Deploy example1
+  hosts: EXAMPLE1
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  tasks:
+  - name: Setup server
+    docker_swarm_service:
+      name: 'example1'
+      image: 'dondonald/devops-tsrc-example1-server:latest'
+# Problem:
+#     Once vgarant is restarted all workers are assigned new names and terefore reporting to prometheus replicas*restarts_count times
+#     i.e. restartin vagrant will look like adding workers since hostname is changed and equal to docker container id
+#   Have to keep workers names somehow unchanged
+# Solution:
+#     https://docs.docker.com/engine/reference/commandline/service_create/#create-services-using-templates
+#     To make ansible skip templatng hostame using {% raw %} ... {% endraw %}
+      hostname: "{% raw %}worker-{{.Task.Slot}}{% endraw %}"
+      replicas: 4
+      networks:
+        -  'example1_main'
+      publish:
+        - published_port: 3000
+          target_port: 3000
+          protocol: tcp
+          mode: ingress
+      mounts:
+        - source: /var/example1/
+          target: /var/example1/
+          type: bind
+        - source: /etc/hostname
+          target: /etc/host_hostname
+          type: bind
+  tags: example1
+
+
+
+- name: Deploy example1 prometeheus exporter
+  hosts: EXAMPLE1_WORKERS
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  tasks:
+
+  - name: Create /var/example1 direcory for exporting data
+    file:
+      path: /var/example1
+      state: directory
+
+  - name: Fetch docker-compose file
+    get_url:
+      url: "https://raw.githubusercontent.com/donDonald/devops/{{app_git_branch}}/tsrc/example1/src/docker-compose.exporter.yml"
+      dest: /home/{{ user_name }}/docker-compose.exporter.yml
+
+  - name: Launch docker-compose file
+    command: docker-compose -f ./docker-compose.exporter.yml up -d --build
+    args:
+      chdir: /home/{{ user_name }}
+
+  tags: example1
+
+
+
+- name: Deploy grafana dashboard
+  hosts: DOCKPROM
+  vars:
+    dashboard: "{{ lookup('url', 'https://raw.githubusercontent.com/donDonald/devops/{{app_git_branch}}/tsrc/example1/src/exporter/grafana.dashboard.v2.json', split_lines=False) | from_json | to_nice_json(indent=4) }}"
+    dst_name: 'example1.grafana.dashboard.json'
+  roles:
+    - dockprom_service_grafana_dashboard
+  tags: example1
+
+
+
+# Using union ansible filter to join EXAMPLE1 and EXAMPLE1_WORKERS
+# https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html#discovering-the-data-type
+# https://docs.ansible.com/ansible/2.3/playbooks_filters.html
+- name: Deploy prometheus scrape configuration
+  hosts: DOCKPROM
+  vars:
+    job_name: 'example1'
+    port: 3001
+    targets: "{{ groups.EXAMPLE1 | union(groups.EXAMPLE1_WORKERS) }}"
+  roles:
+    - dockprom_service_prometheus_scrape_target
+  tags: example1
+

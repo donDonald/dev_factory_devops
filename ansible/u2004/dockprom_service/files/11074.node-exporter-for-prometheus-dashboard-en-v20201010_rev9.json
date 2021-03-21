@@ -1,4 +1,52 @@
 {
+  "__inputs": [
+    {
+      "name": "DS__VICTORIAMETRICS",
+      "label": " VictoriaMetrics",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "7.2.0"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table-old",
+      "name": "Table (old)",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -17,8 +65,8 @@
   "editable": true,
   "gnetId": 11074,
   "graphTooltip": 0,
-  "id": 5,
-  "iteration": 1610627338242,
+  "id": null,
+  "iteration": 1602304673501,
   "links": [
     {
       "$$hashKey": "object:2300",
@@ -53,7 +101,7 @@
   "panels": [
     {
       "collapsed": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -67,7 +115,7 @@
     },
     {
       "columns": [],
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "Partition utilization, disk read, disk write, download bandwidth, upload bandwidth, if there are multiple network cards or multiple partitions, it is the value of the network card or partition with the highest utilization rate collected.\n\nCurrEstab: The number of TCP connections whose current status is ESTABLISHED or CLOSE-WAIT.",
       "fieldConfig": {
         "defaults": {
@@ -563,7 +611,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": null,
       "description": "",
       "fieldConfig": {
@@ -608,7 +656,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -723,7 +771,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 1,
       "fieldConfig": {
         "defaults": {
@@ -764,7 +812,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -869,7 +917,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 1,
       "description": "",
       "fieldConfig": {
@@ -913,7 +961,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1011,7 +1059,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1025,7 +1073,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1087,7 +1135,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
           "expr": "avg(time() - node_boot_time_seconds{instance=~\"$node\"})",
@@ -1105,7 +1153,7 @@
       "type": "stat"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1166,7 +1214,7 @@
         },
         "showUnfilled": true
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
           "expr": "100 - (avg(rate(node_cpu_seconds_total{instance=~\"$node\",mode=\"idle\"}[$interval])) * 100)",
@@ -1214,7 +1262,7 @@
     },
     {
       "columns": [],
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "In this kanban: the total disk, usage, available, and usage rate are consistent with the values of the Size, Used, Avail, and Use% columns of the df command, and the value of Use% will be rounded to one decimal place, which will be more accurate .\n\nNote: The Use% algorithm in df is: (size-free) * 100 / (avail + (size-free)), the result is divisible by this value, non-divisible by this value is +1, and the unit of the result is %.\nRefer to the df command source code:",
       "fieldConfig": {
         "defaults": {
@@ -1423,7 +1471,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1484,7 +1532,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
           "expr": "avg(rate(node_cpu_seconds_total{instance=~\"$node\",mode=\"iowait\"}[$interval])) * 100",
@@ -1515,7 +1563,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -1558,7 +1606,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -1639,7 +1687,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1699,7 +1747,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
           "expr": "count(node_cpu_seconds_total{instance=~\"$node\", mode='system'})",
@@ -1717,7 +1765,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1778,7 +1826,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
           "expr": "avg(node_filesystem_files_free{instance=~\"$node\",mountpoint=\"$maxmount\",fstype=~\"ext.?|xfs\"})",
@@ -1796,7 +1844,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1857,7 +1905,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
           "expr": "sum(node_memory_MemTotal_bytes{instance=~\"$node\"})",
@@ -1875,7 +1923,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1936,7 +1984,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
           "expr": "avg(node_filefd_maximum{instance=~\"$node\"})",
@@ -1970,7 +2018,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "description": "",
       "fieldConfig": {
@@ -2015,7 +2063,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2134,7 +2182,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -2177,7 +2225,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2329,7 +2377,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -2372,7 +2420,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2458,7 +2506,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "editable": true,
       "error": false,
@@ -2505,7 +2553,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2613,7 +2661,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "description": "Per second read / write bytes ",
       "fieldConfig": {
@@ -2656,7 +2704,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2740,7 +2788,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 1,
       "description": "",
       "fieldConfig": {
@@ -2784,7 +2832,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2868,7 +2916,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "description": "Read/write completions per second\n\nWrites completed: 每个磁盘分区每秒写完成次数\n\nIO now 每个磁盘分区每秒正在处理的输入/输出请求数",
       "fieldConfig": {
@@ -2911,7 +2959,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3018,7 +3066,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": null,
       "description": "The time spent on I/O in the natural time of each second.（wall-clock time）",
       "fieldConfig": {
@@ -3063,7 +3111,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3132,7 +3180,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "description": "Time spent on each read/write operation",
       "fieldConfig": {
@@ -3175,7 +3223,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3282,7 +3330,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "decimals": 2,
       "description": "Sockets_used - Sockets currently in use\n\nCurrEstab - TCP connections for which the current state is either ESTABLISHED or CLOSE- WAIT\n\nTCP_alloc - Allocated sockets\n\nTCP_tw - Sockets wating close\n\nUDP_inuse - Udp sockets currently in use\n\nRetransSegs - TCP retransmission packets\n\nOutSegs - Number of packets sent by TCP\n\nInSegs - Number of packets received by TCP",
       "fieldConfig": {
@@ -3328,7 +3376,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3483,7 +3531,7 @@
       "cacheTimeout": null,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS__VICTORIAMETRICS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3522,7 +3570,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "7.2.0",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -3628,16 +3676,28 @@
   "templating": {
     "list": [
       {
-        "allValue": "",
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "default",
+          "value": "default"
         },
-        "datasource": "Prometheus",
+        "hide": 0,
+        "includeAll": false,
+        "label": "datasource",
+        "multi": false,
+        "name": "DS__VICTORIAMETRICS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": "",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "label_values(origin_prometheus)",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Origin_prom",
@@ -3657,14 +3717,9 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "nodeexporter",
-          "value": "nodeexporter"
-        },
-        "datasource": "Prometheus",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\"}, job)",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "JOB",
@@ -3684,14 +3739,9 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Prometheus",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"}, nodename)",
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Host",
@@ -3712,14 +3762,9 @@
       {
         "allFormat": "glob",
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "h1:9100",
-          "value": "h1:9100"
-        },
-        "datasource": "Prometheus",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",nodename=~\"$hostname\"},instance)",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Instance",
@@ -3741,14 +3786,9 @@
       {
         "allFormat": "glob",
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Prometheus",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "label_values(node_network_info{origin_prometheus=~\"$origin_prometheus\",device!~'tap.*|veth.*|br.*|docker.*|virbr.*|lo.*|cni.*'},device)",
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "NIC",
@@ -3776,7 +3816,6 @@
           "text": "2m",
           "value": "2m"
         },
-        "error": null,
         "hide": 0,
         "label": "Interval",
         "name": "interval",
@@ -3825,14 +3864,9 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "/",
-          "value": "/"
-        },
-        "datasource": "Prometheus",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "query_result(topk(1,sort_desc (max(node_filesystem_size_bytes{origin_prometheus=~\"$origin_prometheus\",instance=~'$node',fstype=~\"ext.?|xfs\",mountpoint!~\".*pods.*\"}) by (mountpoint))))",
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "maxmount",
@@ -3852,14 +3886,9 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "h1",
-          "value": "h1"
-        },
-        "datasource": "Prometheus",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "label_values(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\",instance=~\"$node\"}, nodename)",
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "show_hostname",
@@ -3879,14 +3908,9 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "2",
-          "value": "2"
-        },
-        "datasource": "Prometheus",
+        "current": {},
+        "datasource": "${DS__VICTORIAMETRICS}",
         "definition": "query_result(count(node_uname_info{origin_prometheus=~\"$origin_prometheus\",job=~\"$job\"}))",
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "total_servers",
@@ -3934,7 +3958,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "1 ---devops--- Node Exporter for Prometheus Dashboard EN v20201010",
+  "title": "1    Node Exporter for Prometheus Dashboard EN v20201010",
   "uid": "xfpJB9FGz",
-  "version": 1
+  "version": 2
 }

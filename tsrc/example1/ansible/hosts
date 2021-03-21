@@ -6,17 +6,14 @@ h1 ansible_ssh_user='{{ user_name }}'
 [DNS_CLIENTS]
 h1 ansible_ssh_user='{{ user_name }}'
 h2 ansible_ssh_user='{{ user_name }}'
+h3 ansible_ssh_user='{{ user_name }}'
 
 
 
 [DOCKER]
 h1 ansible_ssh_user='{{ user_name }}'
 h2 ansible_ssh_user='{{ user_name }}'
-
-
-
-[DB_SERVERS]
-h1 ansible_ssh_user='{{ user_name }}'
+h3 ansible_ssh_user='{{ user_name }}'
 
 
 
@@ -28,6 +25,7 @@ h1 ansible_ssh_user='{{ user_name }}'
 [PORTAINER_AGENTS]
 h1 ansible_ssh_user='{{ user_name }}'
 h2 ansible_ssh_user='{{ user_name }}'
+h3 ansible_ssh_user='{{ user_name }}'
 
 
 
@@ -39,4 +37,16 @@ h1 ansible_ssh_user='{{ user_name }}'
 [DOCKPROM_EXPORTERS]
 h1 ansible_ssh_user='{{ user_name }}'
 h2 ansible_ssh_user='{{ user_name }}'
+h3 ansible_ssh_user='{{ user_name }}'
+
+
+
+[EXAMPLE1]
+h2 ansible_ssh_user='{{ user_name }}'
+
+
+
+[EXAMPLE1_WORKERS]
+h2 ansible_ssh_user='{{ user_name }}'
+h3 ansible_ssh_user='{{ user_name }}'
 

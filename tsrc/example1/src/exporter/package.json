@@ -1,0 +1,23 @@
+{
+    "name": "example1",
+    "version": "1.0.0",
+    "description": "Simple http server with prometheus exporter for reporting application status",
+    "main": "index.js",
+    "scripts": {
+        "start": "cd /example1 && node index.js"
+    },
+    "keywords": [
+        "example1",
+        "exporter",
+        "prometheus",
+        "example",
+        "server"
+    ],
+    "author": "Pavel Taranov",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.17.1",
+        "prom-client": "^13.0.0",
+        "recursive-readdir-async": "^1.1.8"
+    }
+}

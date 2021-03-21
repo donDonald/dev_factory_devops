@@ -27,9 +27,26 @@ servers=[
         :hostname => "h2",
         :ip => "192.168.200.100",
         :box => "generic/ubuntu2004",
-        :ram => 2048,
+        :ram => 1024,
         :cpu => 1,
         :ports => [
+            {   # example1
+                :host => 20000,
+                :guest => 3000,
+            },
+        ]
+    },
+    {
+        :hostname => "h3",
+        :ip => "192.168.200.101",
+        :box => "generic/ubuntu2004",
+        :ram => 1024,
+        :cpu => 1,
+        :ports => [
+            {   # example1
+                :host => 20001,
+                :guest => 3000,
+            },
         ]
     }
 ]

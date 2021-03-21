@@ -1,0 +1,40 @@
+---
+
+- debug:
+    msg:
+      - 'job_name:{{ job_name }}'
+      - 'port:{{ port }}'
+      - 'targets:{{ targets }}'
+  tags: dockprom_service_prometheus_scrape_target
+
+
+
+# Setup prometheus service discovery using dns_sd_config
+#     https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dns_sd_config
+#     https://www.innoq.com/en/blog/scraping-docker-swarm-service-instances-with-prometheus/
+#     https://groups.google.com/g/prometheus-users/c/vqbzS7WKjN0
+#     https://containers.goffinet.org/k8s/prometheus.html
+#     https://en.wikipedia.org/wiki/List_of_DNS_record_types
+#     https://kb.timescale.cloud/en/articles/3641695-connecting-prometheus-to-your-instance
+# It's tricky here
+# Using ansible lookups
+#     https://stackoverflow.com/questions/46366526/appending-files-with-template-module-in-ansible
+#     https://docs.ansible.com/ansible/latest/user_guide/playbooks_lookups.html#more-lookups
+#     To list lookups plugins: ansible-doc -l -t lookup
+- name: Append prometheus scrape targets(dynamic config)
+  blockinfile:
+    path: /home/vagrant/d_service/prometheus/prometheus.yml
+    marker: "# {mark} append {{ job_name }} to prometheus"
+    block: "{{ lookup('template', 'dns_sd_configs.j2') }}"
+  tags: dockprom_service_prometheus_scrape_target
+
+
+
+- name: Restart services
+  command: docker-compose -f ./docker-compose.prometheus.host-net.yml restart
+  args:
+    chdir: /home/{{ user_name }}/d_service
+  register: output
+  failed_when: output.rc != 0
+  tags: dockprom_service_prometheus_scrape_target
+

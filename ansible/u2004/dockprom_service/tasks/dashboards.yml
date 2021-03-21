@@ -1,0 +1,134 @@
+---
+
+# PT: grafana exoses some HTTP APIs
+# https://grafana.com/docs/grafana/latest/http_api/
+# https://grafana.com/docs/grafana/latest/http_api/dashboard/
+# to list dashboards: $ curl -X GET -H 'Content-Type: application/json' http://admin:admin@localhost:3000/api/search?dashboardIds=*
+# to add dashboard: $ curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d @dashboard.json http://admin:admin@localhost:3000/api/dashboards/db
+
+#   - name: Collect installed dashboards
+#     command: curl -X GET http://admin:admin@localhost:3000/api/search?dashboardIds=*
+#     register: dashboard_list
+#     tags: dockprom_service_dashboards
+
+
+
+#   - name: Print out installed dashboards
+#     vars:
+#       dashboards: "{{ dashboard_list.stdout | from_json }}"
+#     debug:
+#       msg:
+#        - "typeof dashboard_list.stdout:{{ dashboard_list.stdout | type_debug }}"
+#        - "dashboard_list.stdout:{{ dashboard_list.stdout }}"
+#        - "dashboard_list.stderr:{{ dashboard_list.stderr}}"
+#        - "dashboard_list.rc:{{ dashboard_list.rc}}"
+#        - "dashboard_list.failed:{{ dashboard_list.failed }}"
+#        - "dashboards:{{ dashboards }}"
+#     tags: dockprom_service_dashboards
+
+
+
+#################################################################################################
+- name: Deploy grafana 1860.node-exporter-full_rev22.json dashboard
+  vars:
+    dashboard: "{{ lookup('file', '1860.node-exporter-full_rev22.json') | from_json | to_nice_json(indent=4)}}"
+  template:
+    src: dashboard.j2
+    dest: /home/{{ user_name }}/d_service/dashboard.1860.json
+  tags: dockprom_service_dashboards
+
+
+
+- name: Install grafana 1860.node-exporter-full_rev22.json dashboard
+  shell:
+      warn: false
+      cmd: |
+          curl -X POST -H "Content-Type: application/json" -d @dashboard.1860.json http://admin:admin@localhost:3000/api/dashboards/db
+  args:
+    chdir: /home/{{ user_name }}/d_service
+  register: result
+  tags: dockprom_service_dashboards
+
+
+
+- name: Print out result
+  debug:
+    msg:
+     - "result:{{ result }}"
+  tags: dockprom_service_dashboards
+
+
+
+#################################################################################################
+- name: Deploy grafana 11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json dashboard
+  vars:
+    dashboard: "{{ lookup('file', '11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json') | from_json | to_nice_json(indent=4)}}"
+  template:
+    src: dashboard.j2
+    dest: /home/{{ user_name }}/d_service/dashboard.11074.json
+  tags: dockprom_service_dashboards
+
+
+
+- name: Install grafana 11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json dashboard
+  shell:
+      warn: false
+      cmd: |
+          curl -X POST -H "Content-Type: application/json" -d @dashboard.11074.json http://admin:admin@localhost:3000/api/dashboards/db
+  args:
+    chdir: /home/{{ user_name }}/d_service
+  register: result
+  tags: dockprom_service_dashboards
+
+
+
+- name: Print out result
+  debug:
+    msg:
+     - "result:{{ result }}"
+  tags: dockprom_service_dashboards
+
+
+
+#################################################################################################
+- name: Deploy grafana 10180.kds-linux-hosts_rev1.json dashboard
+  vars:
+    dashboard: "{{ lookup('file', '10180.kds-linux-hosts_rev1.json') | from_json | to_nice_json(indent=4)}}"
+  template:
+    src: dashboard.j2
+    dest: /home/{{ user_name }}/d_service/dashboard.10180.json
+  tags: dockprom_service_dashboards
+
+
+
+- name: Install grafana 10180.kds-linux-hosts_rev1.json dashboard
+  shell:
+      warn: false
+      cmd: |
+          curl -X POST -H "Content-Type: application/json" -d @dashboard.10180.json http://admin:admin@localhost:3000/api/dashboards/db
+  args:
+    chdir: /home/{{ user_name }}/d_service
+  register: result
+  tags: dockprom_service_dashboards
+
+
+
+- name: Print out result
+  debug:
+    msg:
+     - "result:{{ result }}"
+  tags: dockprom_service_dashboards
+
+
+#   PT: Once installing dashboards with HTTP API Grafana reports an error like: Templating [job] Error updating options: Datasource named ${DS_PROMETHEUS} was not found 
+#   Btw, installing dashboard works for 1860 and fails for 2 others
+#        could it be because in case ow well working 1860, it has: templating.list[0].name:"DS_PROMETHEUS", no that $ sign, and the not woking dashboards have nothing like this
+#        https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json also has that DS_PROMETHEUS with no tempating.list[0].name 
+#   Looks like well known issue:
+#   https://github.com/grafana/grafana/issues/10786
+#   https://github.com/grafana/terraform-provider-grafana/issues/19
+#   https://github.com/cybozu-go/neco-apps/commit/e252b62f44fe5906eaad5b976cacc327affe47ba
+#   https://github.com/cybozu-go/neco-apps/blob/e252b62f44fe5906eaad5b976cacc327affe47ba/monitoring/base/grafana/dashboards/calico.json
+#   Solution is to update dashbiard jsons, stop using these "datasource": "${DS_PROMETHEUS}", and point datasource explicitly like "datasource": "prometheus"
+
+

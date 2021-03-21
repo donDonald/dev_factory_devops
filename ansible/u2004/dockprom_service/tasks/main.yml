@@ -1,5 +1,13 @@
 ---
 
+- debug:
+    msg:
+      - 'dockprom:{{ dockprom }}'
+      - 'exporters:{{ exporters }}'
+      - 'version:{{ version }}'
+
+
+
 - name: Checkout repo
   git:
     repo: 'https://github.com/donDonald/dockprom.git'
@@ -18,6 +26,43 @@
 
 
 
+- name: Append prometheus scrape targets(dynamic config)
+  vars:
+    job_name: 'prometheus'
+    exporters: '{{ dockprom }}'
+    port: 9090
+  blockinfile:
+    path: /home/{{ user_name }}/d_service/prometheus/prometheus.yml
+    marker: "# {mark} append {{ job_name }} to prometheus"
+    block: "{{ lookup('template', 'prometheus/dns_sd_configs.j2') }}"
+  tags: dockprom_service
+
+
+
+- name: Append nodeexporter scrape targets(dynamic config)
+  vars:
+    job_name: 'nodeexporter'
+    port: 9100
+  blockinfile:
+    path: /home/{{ user_name }}/d_service/prometheus/prometheus.yml
+    marker: "# {mark} append {{ job_name }} to prometheus"
+    block: "{{ lookup('template', 'prometheus/dns_sd_configs.j2') }}"
+  tags: dockprom_service
+
+
+
+- name: Append cadvisor scrape targets(dynamic config)
+  vars:
+    job_name: 'cadvisor'
+    port: 8080
+  blockinfile:
+    path: /home/{{ user_name }}/d_service/prometheus/prometheus.yml
+    marker: "# {mark} append {{ job_name }} to prometheus"
+    block: "{{ lookup('template', 'prometheus/dns_sd_configs.j2') }}"
+  tags: dockprom_service
+
+
+
 - name: Deploy grafana config
   template:
     src: grafana/provisioning/datasources/datasource.yml
@@ -26,36 +71,30 @@
 
 
 
-- name: Deploy grafana 11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json dashboard
-  copy:
-    src: grafana/provisioning/dashboards/11074.json
-    dest: /home/{{ user_name }}/d_service/grafana/provisioning/dashboards/11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json
-    #dest: /home/{{ user_name }}/11074.node-exporter-for-prometheus-dashboard-en-v20201010_rev9.json
-  tags: dockprom_service
-
-
-
-- name: Deploy grafana 1860.node-exporter-full_rev21.json dashboard
-  copy:
-    src: grafana/provisioning/dashboards/1860.json
-    dest: /home/{{ user_name }}/d_service/grafana/provisioning/dashboards/1860.node-exporter-full_rev21.json
-    #dest: /home/{{ user_name }}/1860.node-exporter-full_rev21.json
-  tags: dockprom_service
-
-
-
-- name: Deploy grafana 10180.kds-linux-hosts_rev1.json dashboard
-  copy:
-    src: grafana/provisioning/dashboards/10180.json
-    dest: /home/{{ user_name }}/d_service/grafana/provisioning/dashboards/10180.kds-linux-hosts_rev1.json
-    #dest: /home/{{ user_name }}/10180.kds-linux-hosts_rev1.json
+- name: Append prometheus to grafana config
+  vars:
+    name: 'Prometheus'
+    type: 'prometheus'
+    source: '{{ dockprom }}'
+    port: 9090
+  blockinfile:
+    path: /home/{{ user_name }}/d_service/grafana/provisioning/datasources/datasource.yml
+    marker: "# {mark} append {{ name }} to grafana"
+    block: "{{ lookup('template', 'grafana/provisioning/datasources/datasource.j2') }}"
   tags: dockprom_service
 
 
 
 - name: Launch prometheus & grafana
-  command: docker-compose -f ./docker-compose.prometheus.host-net.yml up -d --build --force-recreate
+  #command: docker-compose -f ./docker-compose.prometheus.host-net.yml up -d --build --force-recreate
+  command: docker-compose -f ./docker-compose.prometheus.host-net.yml up -d --build
   args:
     chdir: /home/{{ user_name }}/d_service
+  tags: dockprom_service
+
+
+
+- name: Install dashboards
+  include: dashboards.yml
   tags: dockprom_service
 

@@ -1,0 +1,38 @@
+---
+
+#- name: 
+#  debug:
+#    msg:
+#     - "dashboard:{{ dashboard }}"
+#     - "dst_name:{{ dst_name }}"
+#  tags: dockprom_service_grafana_dashboard
+
+
+
+- name: Deploy grafana dashboard
+  template:
+    src: dashboard.j2
+    dest: /home/{{ user_name }}/d_service/{{ dst_name }}
+  tags: dockprom_service_grafana_dashboard
+
+
+
+- name: Install grafana dashboard
+  shell:
+      warn: false
+      cmd: |
+          #curl -X POST -H "Content-Type: application/json" -d "$(cat grafana.dashboard.v2.json)" http://admin:admin@localhost:3000/api/dashboards/db
+          curl -X POST -H "Content-Type: application/json" -d @{{ dst_name }} http://admin:admin@localhost:3000/api/dashboards/db
+  args:
+    chdir: /home/{{ user_name }}/d_service
+  register: result
+  tags: dockprom_service_grafana_dashboard
+
+
+
+- name: Print out result
+  debug:
+    msg:
+     - "result:{{ result }}"
+  tags: dockprom_service_grafana_dashboard
+

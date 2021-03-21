@@ -1,0 +1,49 @@
+---
+
+- debug:
+    msg:
+      - "name:{{ name }}"
+      - "git_repo:{{ git_repo }}"
+      - "version:{{ version }}"
+      - "path:{{ path }}"
+
+
+
+- name: pip | install jsondiff(seems docker stack wants this)
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: '{{ user_name }}'
+  pip:
+    name: jsondiff
+  tags: docker_stack
+
+
+
+- name: Checkout repo
+  git:
+    repo: '{{ git_repo }}'
+    force: true
+    dest: /home/{{ user_name }}/{{ name }}/
+    version: '{{ version }}'
+  tags: docker_stack
+
+
+
+#   - name: Copy dc file manually(TEMPORARY FIX, TBR)
+#     copy:
+#       src: docker-compose.yml
+#       dest: /home/{{ user_name }}/{{ name }}/{{ path }}
+#     tags: docker_stack
+
+
+
+- name: Deploy stack from a compose file
+  #community.general.docker_stack:
+  docker_stack:
+    state: present
+    name: "{{ name }}"
+    compose:
+      - /home/{{ user_name }}/{{ name }}/{{ path }}/docker-compose.yml
+  tags: docker_stack
+
