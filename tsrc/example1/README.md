@@ -30,7 +30,7 @@ For devops management I use ansible.
 
 <p align="center">
     <b>Fig1. Hosts and services setup</b><br>
-    <img width="40%" height="40%" src="HostsAndServices.png">
+    <img width="40%" height="40%" src="images/HostsAndServices.png">
 </p>
 <br>
 
@@ -144,7 +144,7 @@ Check prometheus works
 
 <p align="center">
     <b>Fig2. prometheus</b><br>
-    <img width="70%" height="70%" src="prometheus.png">
+    <img width="70%" height="70%" src="images/prometheus.png">
 </p>
 <br>
 
@@ -158,7 +158,7 @@ Use ***admin*** for user and pasword here
 
 <p align="center">
     <b>Fig3. grafana login</b><br>
-    <img width="70%" height="70%" src="grafana.login.png">
+    <img width="70%" height="70%" src="images/grafana.login.png">
 </p>
 <br>
 
@@ -166,7 +166,7 @@ Use ***admin*** for user and pasword here
 
 <p align="center">
     <b>Fig4. grafana home</b><br>
-    <img width="70%" height="70%" src="grafana.home.png">
+    <img width="70%" height="70%" src="images/grafana.home.png">
 </p>
 <br>
 
@@ -174,7 +174,7 @@ Use ***admin*** for user and pasword here
 
 <p align="center">
     <b>Fig5. Dashboard 11074: 1 ---devops--- Node Exporter for Prometheus Dashboard EN v20201010</b><br>
-    <img width="70%" height="70%" src="grafana.dashboards.11074.png">
+    <img width="70%" height="70%" src="images/grafana.dashboards.11074.png">
 </p>
 <br>
 
@@ -182,7 +182,7 @@ Use ***admin*** for user and pasword here
 
 <p align="center">
     <b>Fig6. Dashboard 10180: 2 ---devops--- Linux Hosts Metrics | Base</b><br>
-    <img width="70%" height="70%" src="grafana.dashboards.10180.png">
+    <img width="70%" height="70%" src="images/grafana.dashboards.10180.png">
 </p>
 <br>
 
@@ -190,7 +190,7 @@ Use ***admin*** for user and pasword here
 
 <p align="center">
     <b>Fig7. Dashboard 1860: 3 ---devops--- Prometheus Node Exporter Full</b><br>
-    <img width="70%" height="70%" src="grafana.dashboards.1860.png">
+    <img width="70%" height="70%" src="images/grafana.dashboards.1860.png">
 </p>
 <br>
 
