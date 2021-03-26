@@ -31,16 +31,16 @@
 
 
 
-#   - name: Setup PORTAINER - swarm monitoring tool
-#     import_playbook: portainer.yml
+- name: Setup PORTAINER - swarm monitoring tool
+  import_playbook: portainer.yml
 
 
 
-- name: Setup DOCKPROM - swarm monitoring tool
-  import_playbook: dockprom.yml
+#   - name: Setup DOCKPROM - swarm monitoring tool
+#     import_playbook: dockprom.yml
 
 
 
-- name: Setup example1
-  import_playbook: example1.yml
+#   - name: Setup example1
+#     import_playbook: example1.yml
 
