@@ -37,16 +37,21 @@ Tough environment example below is much closer to real case:
 * h2
     * database
     * metrics exporter
+    * agent (docker proxy for Portainer)
 * h3
     * auth server
     * metrics exporter
+    * agent (docker proxy for Portainer)
 * h4
     * memcached for storing sessions
     * metrics exporter
+    * agent (docker proxy for Portainer)
 * h5
     * app server
     * metrics exporter
+    * agent (docker proxy for Portainer)
 * h6
+    * Portainer - docker managment tool (web server)
     * Prometheus - metrics database (web server)
     * Grafana - metrics visualization tool (web server)
 <p align="center">
@@ -54,7 +59,8 @@ Tough environment example below is much closer to real case:
 </p>
 
 
-**_metrics exporter_** in this case is a simple http server which reports correspondng metrics to **_Prometheus_**
+**_metrics exporter_** in this case is a simple http server which reports correspondng metrics to **_Prometheus_**\
+**_agent_** in this case is a docker engine proxy ustilized by  **_Portainer_**
 
 ---
 
@@ -222,6 +228,38 @@ Installing Ansible is another piece of cake, here is shell script which will do 
 $ cd env
 $ sudo ansible.install.sh
 ```
+
+---
+
+### [Portainer](https://documentation.portainer.io/)
+Portainer is powerful tool for managing docker engine, i.e. containers, images, networks, stacks, etc..\
+Consists of 2 parts:
+* Portainer itself, web server providing UI for managing docker engine - launching containers, and everything what docker can do
+* Portainer agent - a proxy for ruling docker-engines located at another hosts
+
+#### Portainer installation
+Portainer is not meant for installation on main(working) host directly.\
+Portainer is meant to be installed on a single host conforming the environment.\
+Portainer agent is meant to be installed on every host(excluding host with Portainer) conforming the environment.\
+
+Down here are some exampleis what Portainer looks like.
+
+<p align="center">
+    <img width="60%" height="60%" src="images/Portainer1.png">
+</p>
+
+---
+
+<p align="center">
+    <img width="60%" height="60%" src="images/Portainer2.png">
+</p>
+
+---
+
+<p align="center">
+    <img width="60%" height="60%" src="images/Portainer3.png">
+</p>
+
 
 ---
 
