@@ -1,14 +1,1 @@
----
-
-- name: Setup portainer server
-  hosts: PORTAINER
-  roles:
-    - portainer_server
-
-
-
-- name: Setup portainer agents
-  hosts: PORTAINER_AGENTS
-  roles:
-    - portainer_agent
-
+../../../ansible/playbooks/portainer.yml

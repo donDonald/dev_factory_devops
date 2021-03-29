@@ -3,6 +3,13 @@ devops - cool repo for building production like setups consisting of many hosts,
 
 ---
 
+# Prerequisites
+* Ubuntu 20.04
+* One head (more or less clean)
+* Few hands sticking out of proper place
+
+---
+
 # Use-cases
 Sooner or later some developers working on a complex application setup will want to have a look how his solution works in production-like envoronment.\
 A complex app setup might consist of many hosts - some running appications, some running databases and in memory key-value storages, web servers any many others.\
@@ -13,6 +20,15 @@ This repository is meant to create this kind of environments, to learn all of th
     <img src="images/use-cases.png">
 </p>
 <br>
+
+---
+
+# example1 test environment
+
+To prove that everything mentioned below works here is test environment setup is prepared.\
+You can simply navigate to that example and try it out.\
+Finishing reading is recommened though.\
+[tsrc/example1](tsrc/example1/README.md)
 
 ---
 
@@ -301,4 +317,3 @@ Down here is an example what Grafana charts look like.
 
 ### Docker, docker-compose, docker swarm mode, docker registry
 docker and Co is well know set of tools for managing docker images, containers, running applications in swarm mode(many workers with load balancing)
-
