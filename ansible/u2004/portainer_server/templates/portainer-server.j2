@@ -1,0 +1,27 @@
+version: '3.2'
+
+
+
+services:
+
+    portainer:
+        image: portainer/portainer-ce:{{ tag }}
+        hostname: portainer
+        container_name: portainer
+        restart: unless-stopped
+        #command: -H tcp://tasks.agent:9001 --tlsskipverify
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - portainer_data:/data
+        ports:
+            - target: {{ src_port }}
+              published: {{ dst_port }}
+            - target: 8000
+              published: 8000
+        #network_mode: bridge
+
+
+
+volumes:
+    portainer_data: {}
+

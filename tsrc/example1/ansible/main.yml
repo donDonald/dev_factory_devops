@@ -31,8 +31,8 @@
 
 
 
-#   - name: Setup PORTAINER - swarm monitoring tool
-#     import_playbook: portainer.yml
+- name: Setup PORTAINER - swarm monitoring tool
+  import_playbook: portainer.yml
 
 
 

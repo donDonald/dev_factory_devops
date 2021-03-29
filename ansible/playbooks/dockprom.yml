@@ -1,0 +1,15 @@
+
+- name: Setup dockprom - swarm monitoring tool
+  hosts: DOCKPROM
+  vars:
+    dockprom: "{{ groups.DOCKPROM[0] }}"
+    exporters: "{{ groups.DOCKPROM_EXPORTERS }}"
+  roles:
+    - dockprom_service
+
+
+
+- name: Setup dockprom sources
+  hosts: DOCKPROM_EXPORTERS
+  roles:
+    - dockprom_exporters

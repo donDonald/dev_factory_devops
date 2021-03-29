@@ -1,0 +1,48 @@
+---
+
+# https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
+# https://portainer.readthedocs.io/en/stable/agent.html
+# https://www.portainer.io/2018/10/using-portainer-agent/
+# https://documentation.portainer.io/v2.0/deploy/ceinstallswarm/
+# https://documentation.portainer.io/v2.0/deploy/ceinstalldocker/
+#
+# server deployment
+# $ docker volume create portainer_data
+# $ docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
+#
+# agent deployment
+# $ docker run -d -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent
+
+- name: Print out portainer info
+  debug:
+    msg:
+     - "tag:{{ tag }}"
+     - "src_port:{{ src_port }}"
+     - "dst_port:{{ dst_port }}"
+  tags: portainer
+
+
+
+- name: Create destination folder
+  file:
+    path: '/home/{{ user_name }}/portainer/'
+    state: directory
+    recurse: yes 
+  tags: portainer
+
+
+
+- name: Copy portainer deployment file
+  template:
+    src: 'portainer-server.j2'
+    dest: '/home/{{ user_name }}/portainer/portainer-server.yml'
+  tags: portainer
+
+
+
+- name: Deploy portainer server
+  command: docker-compose -f ./portainer-server.yml up -d --build
+  args:
+    chdir: /home/{{ user_name }}/portainer
+  tags: portainer
+

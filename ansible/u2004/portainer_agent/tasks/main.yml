@@ -1,0 +1,41 @@
+---
+
+# https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
+# https://portainer.readthedocs.io/en/stable/agent.html
+# https://www.portainer.io/2018/10/using-portainer-agent/
+# https://documentation.portainer.io/v2.0/deploy/ceinstallswarm/
+# https://documentation.portainer.io/v2.0/deploy/ceinstalldocker/
+
+- name: Print out portainer info
+  debug:
+    msg:
+     - "tag:{{ tag }}"
+     - "src_port:{{ src_port }}"
+     - "dst_port:{{ dst_port }}"
+  tags: portainer
+
+
+
+- name: Create destination folder
+  file:
+    path: '/home/{{ user_name }}/portainer/'
+    state: directory
+    recurse: yes
+  tags: portainer
+
+
+
+- name: Copy portainer deployment file
+  template:
+    src: 'portainer-agent.j2'
+    dest: '/home/{{ user_name }}/portainer/portainer-agent.yml'
+  tags: portainer
+
+
+
+- name: Deploy portainer agent
+  command: docker-compose -f ./portainer-agent.yml up -d --build
+  args:
+    chdir: /home/{{ user_name }}/portainer
+  tags: portainer
+
