@@ -1,5 +1,5 @@
-# devops
-devops - cool repo for building production like setups consisting of many hosts, database, servers, etc.
+# dev_factory_devops
+dev_factory_devops - cool repo for building production like setups consisting of many hosts, database, servers, etc.
 
 ---
 
